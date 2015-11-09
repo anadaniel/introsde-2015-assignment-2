@@ -4,7 +4,7 @@
     Description: Assignment 02: RESTful Services
     Author: anadaniel
   -->
-<project name="assignment2" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="assignment2" default="run" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <!-- PART 1: Ivy properties, download, installation and configuration -->
   <property name="ivy.install.version" value="2.4.0-rc1" />
   <property name="ivy.jar.dir" value="${basedir}/ivy" />
@@ -92,7 +92,7 @@
       </fileset>
     </copy>
   </target>
-  <target name="start">
+  <target name="run" depends="install">
     <echo message="app start Assignment in ${build.dir}" />
     <java classname="introsde.assignment02.App" classpath="${build.dir}" fork="true">
       <arg value="$JAVA_OPTS  -cp" />
