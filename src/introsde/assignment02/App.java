@@ -24,7 +24,7 @@ public class App
       hostname = "localhost";
     }
 
-    URI BASE_URI = new URI(protocol + hostname + port + "assignment02/");
+    URI BASE_URI = new URI(protocol + hostname + port);
 
     System.out.println("Starting sdelab standalone HTTP server...");
     JdkHttpServerFactory.createHttpServer(BASE_URI, createApp());
