@@ -61,12 +61,19 @@ public class Person implements Serializable {
   public void setBirthdate(Date birthdate){
     this.birthdate = birthdate;
   }
-  
+
   public static List<Person> getAll() {
     EntityManager em = Assignment02Dao.instance.createEntityManager();
     List<Person> list = em.createNamedQuery("Person.findAll", Person.class)
     .getResultList();
     Assignment02Dao.instance.closeConnections(em);
     return list;
+  }
+
+  public static Person getPersonById(int personId) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    Person person = em.find(Person.class, personId);
+    Assignment02Dao.instance.closeConnections(em);
+    return person;
   }
 }

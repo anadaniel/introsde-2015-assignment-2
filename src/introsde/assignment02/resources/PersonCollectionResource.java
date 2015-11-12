@@ -48,4 +48,10 @@ public class PersonCollectionResource {
     List<Person> people = Person.getAll();
     return people;
   }
+
+  // Let the PersonResource class to handle operations on a single Person
+  @Path("{personId}")
+  public PersonResource getPerson(@PathParam("personId") int id) {
+    return new PersonResource(uriInfo, request, id);
+  }
 }
