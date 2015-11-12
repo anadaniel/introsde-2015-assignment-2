@@ -30,6 +30,9 @@ public class Person implements Serializable {
   private String lastname;
   @Column(name="firstname")
   private String firstname;
+  @Temporal(TemporalType.DATE)
+  @Column(name="birthdate")
+  private Date birthdate;
   
   // getters
   public int getPersonId(){
@@ -41,6 +44,9 @@ public class Person implements Serializable {
   public String getFirstame(){
     return firstname;
   }
+  public Date getBirthdate(){
+    return birthdate;
+  }
   
   // setters
   public void setPersonId(int personId){
@@ -51,6 +57,9 @@ public class Person implements Serializable {
   }
   public void setFirstame(String firstname){
     this.firstname = firstname;
+  }
+  public void setBirthdate(Date birthdate){
+    this.birthdate = birthdate;
   }
   
   public static List<Person> getAll() {
