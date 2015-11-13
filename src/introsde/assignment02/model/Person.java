@@ -85,5 +85,15 @@ public class Person implements Serializable {
     tx.commit();
     Assignment02Dao.instance.closeConnections(em);
     return person;
-  } 
+  }
+
+  public static Person updatePerson(Person person) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager(); 
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    person = em.merge(person);
+    tx.commit();
+    Assignment02Dao.instance.closeConnections(em);
+    return person;
+  }
 }
