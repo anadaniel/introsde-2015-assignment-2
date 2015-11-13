@@ -32,21 +32,19 @@ public class PersonCollectionResource {
   @Context
   Request request;
 
-  // will work only inside a Java EE application
-  @PersistenceUnit(unitName="introsde-jpa")
-  EntityManager entityManager;
-
-  // will work only inside a Java EE application
-  @PersistenceContext(unitName = "introsde-jpa",type=PersistenceContextType.TRANSACTION)
-  private EntityManagerFactory entityManagerFactory;
-
   // Return the list of people to the user in the browser
   @GET
   @Produces({MediaType.TEXT_XML,  MediaType.APPLICATION_JSON ,  MediaType.APPLICATION_XML })
   public List<Person> getPersonsBrowser() {
-    System.out.println("Getting list of people...");
     List<Person> people = Person.getAll();
     return people;
+  }
+
+  @POST
+  @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Person createPerson(Person person) throws IOException {
+    return Person.createPerson(person);
   }
 
   // Let the PersonResource class to handle operations on a single Person

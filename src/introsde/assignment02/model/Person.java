@@ -41,7 +41,7 @@ public class Person implements Serializable {
   public String getLastname(){
     return lastname;
   }
-  public String getFirstame(){
+  public String getFirstname(){
     return firstname;
   }
   public Date getBirthdate(){
@@ -55,7 +55,7 @@ public class Person implements Serializable {
   public void setLastname(String lastname){
     this.lastname = lastname;
   }
-  public void setFirstame(String firstname){
+  public void setFirstname(String firstname){
     this.firstname = firstname;
   }
   public void setBirthdate(Date birthdate){
@@ -76,4 +76,14 @@ public class Person implements Serializable {
     Assignment02Dao.instance.closeConnections(em);
     return person;
   }
+
+  public static Person createPerson(Person person) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    em.persist(person);
+    tx.commit();
+    Assignment02Dao.instance.closeConnections(em);
+    return person;
+  } 
 }

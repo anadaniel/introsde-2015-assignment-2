@@ -33,13 +33,12 @@ public class PersonResource {
     this.entityManager = em;
   }
 
-  public PersonResource(UriInfo uriInfo, Request request,int id) {
+  public PersonResource(UriInfo uriInfo, Request request, int id) {
     this.uriInfo = uriInfo;
     this.request = request;
     this.id = id;
   }
 
-  // Application integration
   @GET
   @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Person getPerson() {
