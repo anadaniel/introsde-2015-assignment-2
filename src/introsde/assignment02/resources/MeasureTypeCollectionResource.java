@@ -1,5 +1,5 @@
 package introsde.assignment02.resources;
-import introsde.assignment02.model.Person;
+import introsde.assignment02.model.MeasureType;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,8 +22,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-@Path("/persons")
-public class PersonCollectionResource {
+@Path("/measureTypes")
+public class MeasureTypeCollectionResource {
 
   // Allows to insert contextual objects into the class,
   // e.g. ServletContext, Request, Response, UriInfo
@@ -32,24 +32,12 @@ public class PersonCollectionResource {
   @Context
   Request request;
 
-  // Return the list of people to the user in the browser
+  // Return the list of measureTypes to the user in the browser
   @GET
   @Produces({MediaType.TEXT_XML,  MediaType.APPLICATION_JSON ,  MediaType.APPLICATION_XML })
-  public List<Person> getPersons() {
-    List<Person> people = Person.getAll();
-    return people;
-  }
-
-  @POST
-  @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Person createPerson(Person person) throws IOException {
-    return Person.createPerson(person);
-  }
-
-  // Let the PersonResource class to handle operations on a single Person
-  @Path("{personId}")
-  public PersonResource getPerson(@PathParam("personId") int id) {
-    return new PersonResource(uriInfo, request, id);
+  public List<MeasureType> getMeasureTypes() {
+    System.out.println(">>>>>>>>>>>>> MeasureTypeCollectionResource");
+    List<MeasureType> m_types = MeasureType.getAll();
+    return m_types;
   }
 }
