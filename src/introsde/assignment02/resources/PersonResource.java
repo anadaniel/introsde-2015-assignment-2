@@ -55,4 +55,21 @@ public class PersonResource {
     }
     return res;
   }
+
+  @DELETE
+  public Response deletePerson() {
+    Response res;
+    Person person = Person.getPersonById(this.id);
+
+    if (person == null){
+      res = Response.status(Status.NOT_FOUND).build();
+    }
+    else {
+      System.out.println("RESOURCEEEE DELETING PERSON WITH ID: " + person.getPersonId());
+      Person.deletePerson(person);
+      res = Response.status(Status.NO_CONTENT).build();
+    }
+
+    return res;
+  }
 }

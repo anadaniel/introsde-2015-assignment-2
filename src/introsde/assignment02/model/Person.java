@@ -96,4 +96,15 @@ public class Person implements Serializable {
     Assignment02Dao.instance.closeConnections(em);
     return person;
   }
+
+  public static void deletePerson(Person person) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    person = em.merge(person);
+    System.out.println("DELETING PERSON WITH ID: " + person.getPersonId());
+    em.remove(person);
+    tx.commit();
+    Assignment02Dao.instance.closeConnections(em);
+  }
 }
