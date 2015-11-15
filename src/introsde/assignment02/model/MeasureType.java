@@ -6,14 +6,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
+
 @Entity  // indicates that this class is an entity to persist in DB
 @Table(name="MeasureType") // to whole table must be persisted 
 @NamedQuery(name="MeasureType.findAll", query="SELECT mt FROM MeasureType mt")
+
 @XmlRootElement
 public class MeasureType implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -32,6 +31,8 @@ public class MeasureType implements Serializable {
   public int getMeasureTypeId(){
     return measureTypeId;
   }
+
+  @XmlValue
   public String getName(){
     return name;
   }
