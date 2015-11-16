@@ -3,6 +3,7 @@
   <persistence-unit name="introsde-jpa">
     <class>introsde.assignment02.model.Person</class>
     <class>introsde.assignment02.model.MeasureType</class>
+    <class>introsde.assignment02.model.PersonMeasure</class>
     <properties>
       <!-- Scan for annotated classes and Hibernate mapping XML files -->
       <property name="hibernate.archive.autodetection" value="class, hbm"/>

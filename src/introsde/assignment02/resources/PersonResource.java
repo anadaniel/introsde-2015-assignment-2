@@ -1,6 +1,8 @@
 package introsde.assignment02.resources;
 import introsde.assignment02.model.Person;
+import introsde.assignment02.model.PersonMeasure;
 
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,6 +11,8 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -65,11 +69,19 @@ public class PersonResource {
       res = Response.status(Status.NOT_FOUND).build();
     }
     else {
-      System.out.println("RESOURCEEEE DELETING PERSON WITH ID: " + person.getPersonId());
       Person.deletePerson(person);
       res = Response.status(Status.NO_CONTENT).build();
     }
 
     return res;
+  }
+
+  @GET
+  @Path("{measureType}")
+  @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public List<PersonMeasure> getMeasureHistory(@PathParam("measureType") String measureName) {
+    System.out.println(">>>>>>>>>>>>>> param:" + measureName);
+    List<PersonMeasure> measures = PersonMeasure.getMeasuresFromPerson(this.id, measureName);
+    return measures;
   }
 }
