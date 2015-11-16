@@ -1,6 +1,6 @@
 package introsde.assignment02.resources;
 import introsde.assignment02.model.Person;
-import introsde.assignment02.model.PersonMeasure;
+import introsde.assignment02.model.Measure;
 
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -79,9 +79,9 @@ public class PersonResource {
   @GET
   @Path("{measureType}")
   @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public List<PersonMeasure> getMeasureHistory(@PathParam("measureType") String measureName) {
+  public List<Measure> getMeasureHistory(@PathParam("measureType") String measureName) {
     System.out.println(">>>>>>>>>>>>>> param:" + measureName);
-    List<PersonMeasure> measures = PersonMeasure.getMeasuresFromPerson(this.id, measureName);
+    List<Measure> measures = Measure.getMeasuresFromPerson(this.id, measureName);
     return measures;
   }
 }

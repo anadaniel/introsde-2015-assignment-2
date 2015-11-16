@@ -14,22 +14,22 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @Entity  // indicates that this class is an entity to persist in DB
-@Table(name="PersonMeasure") // to whole table must be persisted 
+@Table(name="Measure") // to whole table must be persisted 
 @NamedQuery(
-  name = "PersonMeasure.findMeasuresFromPerson",
-  query = "SELECT pm FROM PersonMeasure pm, MeasureType mt WHERE pm.personId = :pid AND mt.name = :measureName"
+  name = "Measure.findMeasuresFromPerson",
+  query = "SELECT pm FROM Measure pm, MeasureType mt WHERE pm.personId = :pid AND mt.name = :measureName"
 )
 @XmlRootElement(name="measure")
-public class PersonMeasure implements Serializable {
+public class Measure implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id // defines this attributed as the one that identifies the entity
-  @GeneratedValue(generator="sqlite_person_measure")
-  @TableGenerator(name="sqlite_person_measure", table="sqlite_sequence",
+  @GeneratedValue(generator="sqlite_measure")
+  @TableGenerator(name="sqlite_measure", table="sqlite_sequence",
     pkColumnName="name", valueColumnName="seq",
-    pkColumnValue="PersonMeasure")
-  @Column(name="personMeasureId")
-  private int personMeasureId;
+    pkColumnValue="Measure")
+  @Column(name="measureId")
+  private int measureId;
   @Column(name="value")
   private String value;
   @Column(name="personId")
@@ -41,8 +41,8 @@ public class PersonMeasure implements Serializable {
   
   // getters
   @XmlElement(name="mid")
-  public int getPersonMeasureId(){
-    return personMeasureId;
+  public int getMeasureId(){
+    return measureId;
   }
   public String getValue(){
     return value;
@@ -57,8 +57,8 @@ public class PersonMeasure implements Serializable {
   }
   
   // setters
-  public void setPersonMeasureId(int personMeasureTypeId){
-    this.personMeasureId = personMeasureId;
+  public void setMeasureId(int measureId){
+    this.measureId = measureId;
   }
   public void setValue(String value){
     this.value = value;
@@ -70,9 +70,9 @@ public class PersonMeasure implements Serializable {
     this.measureType = measureType;
   }
 
-  public static List<PersonMeasure> getMeasuresFromPerson(int personId, String measureName) {
+  public static List<Measure> getMeasuresFromPerson(int personId, String measureName) {
     EntityManager em = Assignment02Dao.instance.createEntityManager();
-    List<PersonMeasure> list = em.createNamedQuery("PersonMeasure.findMeasuresFromPerson", PersonMeasure.class)
+    List<Measure> list = em.createNamedQuery("Measure.findMeasuresFromPerson", Measure.class)
       .setParameter("pid", personId)
       .setParameter("measureName", measureName)
       .getResultList();
