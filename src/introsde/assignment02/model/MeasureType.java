@@ -40,7 +40,7 @@ public class MeasureType implements Serializable {
   }
   
   // setters
-  public void getMeasureTypeId(int measureTypeId){
+  public void setMeasureTypeId(int measureTypeId){
     this.measureTypeId = measureTypeId;
   }
   public void setName(String name){
