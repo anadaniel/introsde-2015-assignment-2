@@ -21,23 +21,39 @@ import javax.ws.rs.core.UriInfo;
 
 @Stateless // only used if the the application is deployed in a Java EE container
 @LocalBean // only used if the the application is deployed in a Java EE container
-public class MeasureResource {
+public class MeasureCollectionResource {
   @Context
   UriInfo uriInfo;
   @Context
   Request request;
-  int id;
+  int personId;
+  String measureName;
 
-  public MeasureResource(UriInfo uriInfo, Request request, int id) {
+  public MeasureCollectionResource(UriInfo uriInfo, Request request, int personId, String measureName) {
     this.uriInfo = uriInfo;
     this.request = request;
-    this.id = id;
+    this.personId = personId;
+    this.measureName = measureName;
   }
+
 
   @GET
   @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Measure getMeasure() {
-    Measure measure = Measure.getMeasureById(this.id);
-    return measure;
+  public List<Measure> getMeasureHistory() {
+    List<Measure> measures = Measure.getMeasuresFromPerson(this.personId, this.measureName);
+    return measures;
+  }
+
+  @POST
+  @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Measure createMeasure(Measure measure) throws IOException {
+    return Measure.createMeasure(measure, this.personId, this.measureName);
+  }
+
+  // Let the MeasureResource class to handle operations on a single Person
+  @Path("{measureId}")
+  public MeasureResource getMeasureResource(@PathParam("measureId") int id) {
+    return new MeasureResource(uriInfo, request, id);
   }
 }

@@ -49,7 +49,7 @@ public class PersonCollectionResource {
 
   // Let the PersonResource class to handle operations on a single Person
   @Path("{personId}")
-  public PersonResource getPerson(@PathParam("personId") int id) {
+  public PersonResource getPersonResource(@PathParam("personId") int id) {
     return new PersonResource(uriInfo, request, id);
   }
 }

@@ -77,7 +77,7 @@ public class PersonResource {
   }
 
   @Path("{measureType}")
-  public MeasureResource getMeasureResource(@PathParam("measureType") String measureName) {
-    return new MeasureResource(uriInfo, request, id, measureName);
+  public MeasureCollectionResource getMeasureCollectionResource(@PathParam("measureType") String measureName) {
+    return new MeasureCollectionResource(uriInfo, request, id, measureName);
   }
 }
