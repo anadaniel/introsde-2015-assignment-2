@@ -115,4 +115,19 @@ public class Measure implements Serializable {
     Assignment02Dao.instance.closeConnections(em);
     return measure;
   }
+
+  public static Measure updateMeasure(Measure old_measure, Measure updated_measure) {
+    //When updating a measure only the value attribute can be changed
+    updated_measure.setMeasureId(old_measure.getMeasureId());
+    updated_measure.setPersonId(old_measure.getPersonId());
+    updated_measure.setMeasureType(old_measure.getMeasureType());
+
+    EntityManager em = Assignment02Dao.instance.createEntityManager(); 
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    updated_measure = em.merge(updated_measure);
+    tx.commit();
+    Assignment02Dao.instance.closeConnections(em);
+    return updated_measure;
+  }
 }

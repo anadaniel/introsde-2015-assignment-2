@@ -17,6 +17,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 @Stateless // only used if the the application is deployed in a Java EE container
@@ -39,5 +41,20 @@ public class MeasureResource {
   public Measure getMeasure() {
     Measure measure = Measure.getMeasureById(this.id);
     return measure;
+  }
+
+  @PUT
+  @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response putMeasure(Measure measure) {
+    Response res;
+    Measure existing_measure = Measure.getMeasureById(this.id);
+
+    if (existing_measure == null) {
+      res = Response.status(Status.NOT_FOUND).build();
+    } else {
+      measure = Measure.updateMeasure(existing_measure, measure);
+      res = Response.status(Status.OK).entity(measure).location(uriInfo.getAbsolutePath()).build();
+    }
+    return res;
   }
 }
