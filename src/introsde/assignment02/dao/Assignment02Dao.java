@@ -6,34 +6,39 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public enum Assignment02Dao {
-    instance;
-    private EntityManagerFactory emf;
+  instance;
+  private EntityManagerFactory emf;
 
-    private Assignment02Dao() {
-        if (emf!=null) {
-            emf.close();
-        }
-        emf = Persistence.createEntityManagerFactory("introsde-jpa");
+  private Assignment02Dao() {
+    if (emf!=null) {
+      emf.close();
     }
-
-    public EntityManager createEntityManager() {
-        try {
-            return emf.createEntityManager();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;    
+    
+    try {
+      emf = Persistence.createEntityManagerFactory("introsde-jpa");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    public void closeConnections(EntityManager em) {
-        em.close();
+  public EntityManager createEntityManager() {
+    try {
+      return emf.createEntityManager();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    return null;    
+  }
 
-    public EntityTransaction getTransaction(EntityManager em) {
-        return em.getTransaction();
-    }
+  public void closeConnections(EntityManager em) {
+    em.close();
+  }
 
-    public EntityManagerFactory getEntityManagerFactory() {
-        return emf;
-    }  
+  public EntityTransaction getTransaction(EntityManager em) {
+    return em.getTransaction();
+  }
+
+  public EntityManagerFactory getEntityManagerFactory() {
+    return emf;
+  }  
 }
