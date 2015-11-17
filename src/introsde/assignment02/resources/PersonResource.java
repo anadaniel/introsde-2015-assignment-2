@@ -76,12 +76,8 @@ public class PersonResource {
     return res;
   }
 
-  @GET
   @Path("{measureType}")
-  @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public List<Measure> getMeasureHistory(@PathParam("measureType") String measureName) {
-    System.out.println(">>>>>>>>>>>>>> param:" + measureName);
-    List<Measure> measures = Measure.getMeasuresFromPerson(this.id, measureName);
-    return measures;
+  public MeasureResource getMeasureResource(@PathParam("measureType") String measureName) {
+    return new MeasureResource(uriInfo, request, id, measureName);
   }
 }

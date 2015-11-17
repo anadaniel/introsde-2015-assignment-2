@@ -102,7 +102,6 @@ public class Person implements Serializable {
     EntityTransaction tx = em.getTransaction();
     tx.begin();
     person = em.merge(person);
-    System.out.println("DELETING PERSON WITH ID: " + person.getPersonId());
     em.remove(person);
     tx.commit();
     Assignment02Dao.instance.closeConnections(em);

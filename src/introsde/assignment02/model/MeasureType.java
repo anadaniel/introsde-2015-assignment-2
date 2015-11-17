@@ -11,8 +11,10 @@ import javax.xml.bind.annotation.XmlValue;
 
 @Entity  // indicates that this class is an entity to persist in DB
 @Table(name="MeasureType") // to whole table must be persisted 
-@NamedQuery(name="MeasureType.findAll", query="SELECT mt FROM MeasureType mt")
-
+@NamedQueries({
+  @NamedQuery(name="MeasureType.findAll", query="SELECT mt FROM MeasureType mt"),
+  @NamedQuery(name="MeasureType.findFromName", query="SELECT mt FROM MeasureType mt WHERE mt.name = :name")
+})
 @XmlRootElement
 public class MeasureType implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -50,5 +52,14 @@ public class MeasureType implements Serializable {
     List<MeasureType> list = em.createNamedQuery("MeasureType.findAll", MeasureType.class).getResultList();
     Assignment02Dao.instance.closeConnections(em);
     return list;
+  }
+
+  public static MeasureType findFromName(String name) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    MeasureType measureType = em.createNamedQuery("MeasureType.findFromName", MeasureType.class)
+      .setParameter("name", name)
+      .getSingleResult();
+    Assignment02Dao.instance.closeConnections(em);
+    return measureType;
   }
 }

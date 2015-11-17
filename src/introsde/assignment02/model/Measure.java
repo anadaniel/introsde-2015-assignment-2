@@ -4,6 +4,7 @@ import introsde.assignment02.dao.Assignment02Dao;
 import introsde.assignment02.model.MeasureType;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class Measure implements Serializable {
   private String value;
   @Column(name="personId")
   private int personId;
+  @Temporal(TemporalType.DATE)
+  @Column(name="created")
+  private Date created;
 
   @ManyToOne
   @JoinColumn(name="measureTypeId",referencedColumnName="measureTypeId")
@@ -55,6 +59,9 @@ public class Measure implements Serializable {
   public MeasureType getMeasureType(){
     return measureType;
   }
+  public Date getCreated(){
+    return created;
+  }
   
   // setters
   public void setMeasureId(int measureId){
@@ -69,6 +76,21 @@ public class Measure implements Serializable {
   public void setMeasureType(MeasureType measureType){
     this.measureType = measureType;
   }
+  public void setCreated(Date created){
+    this.created = created;
+  }
+  
+  public void setMeasureTypeFromMeasureName(String measureName){
+    MeasureType measureType = MeasureType.findFromName(measureName);
+    setMeasureType(measureType);
+  }
+
+  public static Measure getMeasureById(int measureId) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    Measure measure = em.find(Measure.class, measureId);
+    Assignment02Dao.instance.closeConnections(em);
+    return measure;
+  }
 
   public static List<Measure> getMeasuresFromPerson(int personId, String measureName) {
     EntityManager em = Assignment02Dao.instance.createEntityManager();
@@ -78,5 +100,19 @@ public class Measure implements Serializable {
       .getResultList();
     Assignment02Dao.instance.closeConnections(em);
     return list;
+  }
+
+  public static Measure createMeasure(Measure measure, int personId, String measureName) {
+    measure.setPersonId(personId);
+    measure.setMeasureTypeFromMeasureName(measureName);
+    measure.setCreated(new Date());
+
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    em.persist(measure);
+    tx.commit();
+    Assignment02Dao.instance.closeConnections(em);
+    return measure;
   }
 }
