@@ -87,14 +87,31 @@ public class Person implements Serializable {
     return person;
   }
 
-  public static Person updatePerson(Person person) {
+  public static Person syncPerson(Person oldPerson, Person updatedPerson) {
+    updatedPerson.setPersonId(oldPerson.getPersonId());
+
+    if (updatedPerson.getFirstname() == null)
+      updatedPerson.setFirstname(oldPerson.getFirstname());
+
+    if (updatedPerson.getLastname() == null)
+      updatedPerson.setLastname(oldPerson.getLastname());
+
+    if (updatedPerson.getBirthdate() == null)
+      updatedPerson.setBirthdate(oldPerson.getBirthdate());
+
+    return updatedPerson;
+  }
+
+  public static Person updatePerson(Person oldPerson, Person updatedPerson) {
+    updatedPerson = syncPerson(oldPerson, updatedPerson);
+
     EntityManager em = Assignment02Dao.instance.createEntityManager(); 
     EntityTransaction tx = em.getTransaction();
     tx.begin();
-    person = em.merge(person);
+    updatedPerson = em.merge(updatedPerson);
     tx.commit();
     Assignment02Dao.instance.closeConnections(em);
-    return person;
+    return updatedPerson;
   }
 
   public static void deletePerson(Person person) {

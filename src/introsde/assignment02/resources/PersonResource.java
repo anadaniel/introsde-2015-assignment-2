@@ -53,9 +53,8 @@ public class PersonResource {
     if (existing_person == null) {
       res = Response.status(Status.NOT_FOUND).build();
     } else {
-      person.setPersonId(this.id);
-      Person.updatePerson(person);
-      res = Response.status(Status.OK).location(uriInfo.getAbsolutePath()).build();
+      person = Person.updatePerson(existing_person, person);
+      res = Response.status(Status.OK).entity(person).location(uriInfo.getAbsolutePath()).build();
     }
     return res;
   }
