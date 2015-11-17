@@ -16,11 +16,17 @@ import javax.xml.bind.annotation.XmlType;
 
 @Entity  // indicates that this class is an entity to persist in DB
 @Table(name="Measure") // to whole table must be persisted 
-@NamedQuery(
-  name = "Measure.findMeasuresFromPerson",
-  query = "SELECT pm FROM Measure pm, MeasureType mt WHERE pm.personId = :pid AND mt.name = :measureName"
-)
-@XmlRootElement(name="measure")
+@NamedQueries({
+  @NamedQuery(
+    name = "Measure.findMeasuresFromPerson",
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND mt.name = :measureName ORDER BY m.measureId DESC"
+  ),
+  @NamedQuery(
+    name = "Measure.findCurrentMeasuresFromPerson",
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid GROUP BY mt.measureTypeId"
+  )
+})
+@XmlRootElement
 public class Measure implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -97,6 +103,15 @@ public class Measure implements Serializable {
     List<Measure> list = em.createNamedQuery("Measure.findMeasuresFromPerson", Measure.class)
       .setParameter("pid", personId)
       .setParameter("measureName", measureName)
+      .getResultList();
+    Assignment02Dao.instance.closeConnections(em);
+    return list;
+  }
+
+  public static List<Measure> getCurrentMeasuresFromPerson(int personId) {
+    EntityManager em = Assignment02Dao.instance.createEntityManager();
+    List<Measure> list = em.createNamedQuery("Measure.findCurrentMeasuresFromPerson", Measure.class)
+      .setParameter("pid", personId)
       .getResultList();
     Assignment02Dao.instance.closeConnections(em);
     return list;

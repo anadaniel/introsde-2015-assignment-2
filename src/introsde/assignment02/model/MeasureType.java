@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 @Entity  // indicates that this class is an entity to persist in DB
@@ -30,6 +31,7 @@ public class MeasureType implements Serializable {
   private String name;
   
   // getters
+  @XmlTransient
   public int getMeasureTypeId(){
     return measureTypeId;
   }

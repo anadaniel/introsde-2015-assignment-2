@@ -33,6 +33,9 @@ public class Person implements Serializable {
   @Temporal(TemporalType.DATE)
   @Column(name="birthdate")
   private Date birthdate;
+
+  @Transient
+  private List<Measure> currentMeasures;
   
   // getters
   public int getPersonId(){
@@ -46,6 +49,13 @@ public class Person implements Serializable {
   }
   public Date getBirthdate(){
     return birthdate;
+  }
+
+  @XmlElementWrapper(name="healthProfile")
+  @XmlElement(name="measure")
+  public List<Measure> getCurrentMeasures(){
+    this.currentMeasures = Measure.getCurrentMeasuresFromPerson(this.personId);
+    return currentMeasures;
   }
   
   // setters
@@ -73,6 +83,7 @@ public class Person implements Serializable {
   public static Person getPersonById(int personId) {
     EntityManager em = Assignment02Dao.instance.createEntityManager();
     Person person = em.find(Person.class, personId);
+    em.refresh(person);
     Assignment02Dao.instance.closeConnections(em);
     return person;
   }
