@@ -3,15 +3,8 @@ import introsde.assignment02.model.Person;
 
 import java.io.IOException;
 import java.util.List;
-import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.persistence.PersistenceUnit;
-import javax.servlet.http.HttpServletResponse;
+// import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
