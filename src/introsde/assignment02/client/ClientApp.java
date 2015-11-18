@@ -8,17 +8,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 
+import java.io.*;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.*;
+
 public class ClientApp {
-  public static void main(String[] args) {
-    ClientConfig clientConfig = new ClientConfig();
-    Client client = ClientBuilder.newClient(clientConfig);
-    WebTarget service = client.target(getBaseURI());
-
-    String test = service.path("/persons").request().accept(MediaType.TEXT_XML).get().readEntity(String.class);
-    System.out.println(">>>>> Test GET Request: " + test);
-  }
-
-  private static URI getBaseURI() {
-    return UriBuilder.fromUri("http://127.0.1.1:3000").build();
+  public static void main(String[] args) throws TransformerException {
+    PersonClient personClient = new PersonClient("http://127.0.1.1:3000");
+    personClient.getAllPeople();
   }
 }

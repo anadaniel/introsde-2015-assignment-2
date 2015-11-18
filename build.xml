@@ -106,7 +106,7 @@
     </java>
   </target>
   <target name="start.client">
-    <echo message=">>>>>>> Client Starting" />
+    <echo message=">>>>>>>>>> Client Starting <<<<<<<<<<" />
     <java classname="introsde.assignment02.client.ClientApp" classpath="${build.dir}" fork="true">
       <arg value="$JAVA_OPTS -cp" />
       <classpath>
