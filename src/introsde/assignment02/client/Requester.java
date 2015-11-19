@@ -26,6 +26,7 @@ public class Requester {
   private String responseBody;
   private int responseStatus;
   private String requestResult;
+  private int firstPersonId;
 
   public Requester(String serverUri){
     this.serverUri = serverUri;
@@ -33,31 +34,52 @@ public class Requester {
     service = client.target( getBaseURI() );
   }
 
+
+  /**
+  * Performs Request #1 - Print people and count if there are more than 3 persons in the db
+  */
   public void getAllPeople() throws Exception {
-    response = performGetRequest("/persons", "GET", "application/xml");
+    String reqPath = "/persons";
+    response = performGetRequest(reqPath, "application/xml");
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
     xmlParser = new XmlParser(responseBody);
     int peopleCount = xmlParser.countPeople();
 
-    requestResult = "";
     if ( peopleCount >= 3 )
       requestResult = "OK";
     else
       requestResult = "ERROR";
 
     // Print XmlRequest
-    printRequestDetails(1, "GET", "/persons", "application/xml", "");
+    printRequestDetails(1, "GET", reqPath, "application/xml", "");
 
-    response = performGetRequest("/persons", "GET", "application/json");
+    response = performGetRequest(reqPath, "application/json");
     responseBody = response.readEntity(String.class);
 
     //Print JsonRequest
-    printRequestDetails(1, "GET", "/persons", "application/json", "");
+    printRequestDetails(1, "GET", reqPath, "application/json", "");
   }
 
-  private Response performGetRequest(String path, String method, String accept){
+  public void printFirstPerson() throws Exception {
+    firstPersonId = xmlParser.getFirstPersonId();
+    String reqPath = "/persons/" + firstPersonId;
+
+    response = performGetRequest(reqPath, "application/xml");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    if ( responseStatus == 200 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XmlRequest
+    printRequestDetails(2, "GET", reqPath, "application/xml", "");
+  }
+
+  private Response performGetRequest(String path, String accept){
     return service.path(path).request().accept(accept).get();
   }
 

@@ -22,6 +22,7 @@ public class ClientApp {
     //Perform Request #1
     requester.getAllPeople();
 
-
+    //Perform Request #2
+    requester.printFirstPerson();
   }
 }

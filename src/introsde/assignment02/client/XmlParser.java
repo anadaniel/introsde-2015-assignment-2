@@ -56,4 +56,17 @@ public class XmlParser {
     int peopleCount = (int) personNodes.getLength();
     return peopleCount;
   }
+
+  /**
+  * Return the id of the first person in the people list
+  * NOTE: The people list xml string should have been loaded before performing this method
+  */
+  public int getFirstPersonId() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//person[1]");
+    Node firstPerson = (Node) expr.evaluate(doc, XPathConstants.NODE);
+
+    Element personElement = (Element) firstPerson;
+
+    return Integer.parseInt( personElement.getElementsByTagName("personId").item(0).getTextContent() );
+  }
 }
