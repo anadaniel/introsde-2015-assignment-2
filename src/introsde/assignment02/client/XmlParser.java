@@ -69,4 +69,15 @@ public class XmlParser {
 
     return Integer.parseInt( personElement.getElementsByTagName("personId").item(0).getTextContent() );
   }
+
+  /**
+  * Return the id of the first person in the people list
+  * NOTE: The person xml string should have been loaded before performing this method
+  */
+  public String getPersonFirstname() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//firstname");
+    Node firstname = (Node) expr.evaluate(doc, XPathConstants.NODE);
+
+    return firstname.getTextContent();
+  }
 }

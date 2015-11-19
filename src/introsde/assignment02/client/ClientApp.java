@@ -55,7 +55,7 @@ public class ClientApp {
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
-    // Parse response body
+    // Parse response body - People List
     xmlParser = new XmlParser(responseBody);
     int peopleCount = xmlParser.countPeople();
 
@@ -87,6 +87,10 @@ public class ClientApp {
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
+    // Parse response body - Single Person
+    xmlParser = new XmlParser(responseBody);
+    String oldname = xmlParser.getPersonFirstname();
+
     if ( responseStatus == 200 )
       requestResult = "OK";
     else
@@ -105,15 +109,25 @@ public class ClientApp {
 
     /*
     *****************************************
-    * Performs Request #2 - Print first person
+    * Performs Request #3 - Edit first person
     *****************************************
     */
     reqPath = "/persons/" + firstPersonId;
+    
 
     // Perform XML Request
     response = performPostPutRequest(reqPath, "application/xml", "PUT", "application/xml", "<person><firstname>Anidew</firstname></person>");
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
+
+    // Parse response body - Single Person
+    xmlParser = new XmlParser(responseBody);
+    String newname = xmlParser.getPersonFirstname();
+
+    if ( oldname != newname )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
 
     // Print XML Request
     printRequestDetails(3, "PUT", reqPath, "application/xml", "application/xml");
