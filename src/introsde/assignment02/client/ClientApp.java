@@ -116,7 +116,7 @@ public class ClientApp {
     
 
     // Perform XML Request
-    response = performPostPutRequest(reqPath, "application/xml", "PUT", "application/xml", "<person><firstname>Anidew</firstname></person>");
+    response = performPostPutRequest(reqPath, "application/xml", "PUT", "application/xml", "<person><firstname>Ana XML</firstname></person>");
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
@@ -131,6 +131,14 @@ public class ClientApp {
 
     // Print XML Request
     printRequestDetails(3, "PUT", reqPath, "application/xml", "application/xml");
+
+    // Perform JSON Request
+    response = performPostPutRequest(reqPath, "application/json", "PUT", "application/json", "{\"firstname\":\"Ana JSON\"}");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    // Print JSON Request
+    printRequestDetails(3, "PUT", reqPath, "application/json", "application/json");
   }
 
   private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
