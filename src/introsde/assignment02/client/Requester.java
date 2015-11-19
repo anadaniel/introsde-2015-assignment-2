@@ -20,39 +20,58 @@ public class Requester {
 
   private Client client;
   private WebTarget service;
+  private String serverUri;
+  private XmlParser xmlParser;
+  private Response response;
+  private String responseBody;
+  private int responseStatus;
+  private String requestResult;
 
   public Requester(String serverUri){
+    this.serverUri = serverUri;
     client = ClientBuilder.newClient(new ClientConfig());
-    service = client.target( getBaseURI(serverUri) );
+    service = client.target( getBaseURI() );
   }
 
   public void getAllPeople() throws Exception {
-    Response response = performRequest("/persons", "GET", "application/xml");
-    String responseBody = response.readEntity(String.class);
-    int responseStatus = response.getStatus();
+    response = performGetRequest("/persons", "GET", "application/xml");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
 
-    XmlParser xmlParser = new XmlParser(responseBody);
+    xmlParser = new XmlParser(responseBody);
     int peopleCount = xmlParser.countPeople();
 
-    String requestResult = "";
+    requestResult = "";
     if ( peopleCount >= 3 )
       requestResult = "OK";
     else
       requestResult = "ERROR";
 
-    // String result
-    printRequestDetails(1, "GET", "/persons", "application/xml", "", responseBody, responseStatus, requestResult);
+    // Print XmlRequest
+    printRequestDetails(1, "GET", "/persons", "application/xml", "");
+
+    response = performGetRequest("/persons", "GET", "application/json");
+    responseBody = response.readEntity(String.class);
+
+    //Print JsonRequest
+    printRequestDetails(1, "GET", "/persons", "application/json", "");
   }
 
-  private Response performRequest(String path, String method, String accept){
+  private Response performGetRequest(String path, String method, String accept){
     return service.path(path).request().accept(accept).get();
   }
 
-  private void printRequestDetails(int n, String method, String path, String accept, String contentType, String responseBody, int responseStatus, String requestResult) throws TransformerException {
+  private void printRequestDetails(int n, String method, String path, String accept, String contentType) throws TransformerException {
     System.out.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
     System.out.println("=> Result: " + requestResult);
     System.out.println("=> HTTP Status: " + responseStatus);
-    prettyPrintXml(responseBody);
+
+    if(accept == "application/xml")
+      prettyPrintXml(responseBody);
+    else
+      System.out.println(responseBody);
+
+    System.out.println("");
   }
 
   private void prettyPrintXml(String input) throws TransformerException {
@@ -67,7 +86,7 @@ public class Requester {
     System.out.println(outputXml.getWriter().toString());
   }
 
-  private static URI getBaseURI(String uri) {
-    return UriBuilder.fromUri(uri).build();
+  private URI getBaseURI() {
+    return UriBuilder.fromUri(serverUri).build();
   }
 }

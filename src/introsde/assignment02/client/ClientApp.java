@@ -16,7 +16,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class ClientApp {
   public static void main(String[] args) throws Exception {
+  	System.out.println(">>>>> Server URL: http://127.0.1.1:3000");
     Requester requester = new Requester("http://127.0.1.1:3000");
+
+    //Perform Request #1
     requester.getAllPeople();
+
+
   }
 }
