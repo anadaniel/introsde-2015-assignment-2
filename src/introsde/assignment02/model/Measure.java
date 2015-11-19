@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -25,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
   )
 })
 @XmlRootElement
+@XmlType(propOrder={"measureId","value","measureType","created"})
 public class Measure implements Serializable {
   private static final long serialVersionUID = 1L;
 
