@@ -13,25 +13,30 @@ import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 
-public class PersonClient {
+public class Requester {
 
   private Client client;
   private WebTarget service;
 
-  public PersonClient(String serverUri){
+  public Requester(String serverUri){
     client = ClientBuilder.newClient(new ClientConfig());
     service = client.target( getBaseURI(serverUri) );
   }
 
   public void getAllPeople() throws TransformerException {
-    Response res = service.path("/persons").request().accept("application/xml").get();
-    printRequestDetails(1, "GET", "/persons", "application/xml", "", res);
+    Response response = performRequest("/persons", "GET", "application/xml");
+    // String result
+    printRequestDetails(1, "GET", "/persons", "application/xml", "", response);
   }
 
-  private void printRequestDetails(int n, String method, String path, String accept, String contentType, Response res) throws TransformerException {
+  private Response performRequest(String path, String method, String accept){
+    return service.path(path).request().accept(accept).get();
+  }
+
+  private void printRequestDetails(int n, String method, String path, String accept, String contentType, Response response) throws TransformerException {
     System.out.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
-    System.out.println("=> HTTP Status: " + res.getStatus());
-    prettyPrintXml(res.readEntity(String.class));
+    System.out.println("=> HTTP Status: " + response.getStatus());
+    prettyPrintXml(response.readEntity(String.class));
   }
 
   private void prettyPrintXml(String input) throws TransformerException {
