@@ -9,10 +9,13 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.io.*;
+import java.lang.Exception;
 import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class ClientApp {
-  public static void main(String[] args) throws TransformerException {
+  public static void main(String[] args) throws Exception {
     Requester requester = new Requester("http://127.0.1.1:3000");
     requester.getAllPeople();
   }

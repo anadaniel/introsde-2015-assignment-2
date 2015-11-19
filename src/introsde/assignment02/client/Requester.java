@@ -10,8 +10,11 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.io.*;
+import java.lang.Exception;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class Requester {
 
@@ -23,20 +26,33 @@ public class Requester {
     service = client.target( getBaseURI(serverUri) );
   }
 
-  public void getAllPeople() throws TransformerException {
+  public void getAllPeople() throws Exception {
     Response response = performRequest("/persons", "GET", "application/xml");
+    String responseBody = response.readEntity(String.class);
+    int responseStatus = response.getStatus();
+
+    XmlParser xmlParser = new XmlParser(responseBody);
+    int peopleCount = xmlParser.countPeople();
+
+    String requestResult = "";
+    if ( peopleCount >= 3 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
     // String result
-    printRequestDetails(1, "GET", "/persons", "application/xml", "", response);
+    printRequestDetails(1, "GET", "/persons", "application/xml", "", responseBody, responseStatus, requestResult);
   }
 
   private Response performRequest(String path, String method, String accept){
     return service.path(path).request().accept(accept).get();
   }
 
-  private void printRequestDetails(int n, String method, String path, String accept, String contentType, Response response) throws TransformerException {
+  private void printRequestDetails(int n, String method, String path, String accept, String contentType, String responseBody, int responseStatus, String requestResult) throws TransformerException {
     System.out.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
-    System.out.println("=> HTTP Status: " + response.getStatus());
-    prettyPrintXml(response.readEntity(String.class));
+    System.out.println("=> Result: " + requestResult);
+    System.out.println("=> HTTP Status: " + responseStatus);
+    prettyPrintXml(responseBody);
   }
 
   private void prettyPrintXml(String input) throws TransformerException {
