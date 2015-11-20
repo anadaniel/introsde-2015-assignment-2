@@ -3,7 +3,6 @@ import introsde.assignment02.model.Person;
 
 import java.io.IOException;
 import java.util.List;
-// import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 @Path("/persons")
@@ -36,8 +37,9 @@ public class PersonCollectionResource {
   @POST
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Person createPerson(Person person) throws IOException {
-    return Person.createPerson(person);
+  public Response createPerson(Person person) throws IOException {
+    Person created_person = Person.createPerson(person);
+    return Response.status(Status.CREATED).entity(created_person).build();
   }
 
   // Let the PersonResource class to handle operations on a single Person
