@@ -15,6 +15,9 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+
 
 @Path("/persons")
 public class PersonCollectionResource {
@@ -38,8 +41,11 @@ public class PersonCollectionResource {
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response createPerson(Person person) throws IOException {
-    Person created_person = Person.createPerson(person);
-    return Response.status(Status.CREATED).entity(created_person).build();
+    Person createdPerson = Person.createPerson(person);
+    URI location = UriBuilder.fromUri(uriInfo.getAbsolutePath())
+                             .path(Integer.toString(createdPerson.getPersonId()))
+                             .build();
+    return Response.status(Status.CREATED).entity(createdPerson).location(location).build();
   }
 
   // Let the PersonResource class to handle operations on a single Person
