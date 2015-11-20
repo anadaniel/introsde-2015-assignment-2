@@ -247,9 +247,10 @@ public class ClientApp {
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
-    // Parse response body - People List
+    // Parse response body - Measure Types
     xmlParser = new XmlParser(responseBody);
     int measureTypesCount = xmlParser.countNodes("measureType");
+    String[] measureTypes = xmlParser.getMeasureTypes();
 
     if ( measureTypesCount >= 3 )
       requestResult = "OK";

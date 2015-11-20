@@ -55,8 +55,7 @@ public class XmlParser {
     XPathExpression expr = xpath.compile("//" + nodeName);
     NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 
-    int nodesCount = (int) nodes.getLength();
-    return nodesCount;
+    return (int) nodes.getLength();
   }
 
   /**
@@ -81,5 +80,22 @@ public class XmlParser {
     Node firstname = (Node) expr.evaluate(doc, XPathConstants.NODE);
 
     return firstname.getTextContent();
+  }
+
+  /**
+  * Return a String array with the names of the available Measure Types
+  * NOTE: The measure types xml string should have been loaded before performing this method
+  */
+  public String[] getMeasureTypes() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//measureType");
+    NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+    int measureTypeNumber = nodes.getLength();
+    String[] measureTypeNames = new String[ measureTypeNumber ];
+
+    for(int i = 0; i < measureTypeNumber; i++){
+      measureTypeNames[i] = nodes.item(i).getTextContent();
+    }
+
+    return measureTypeNames;
   }
 }
