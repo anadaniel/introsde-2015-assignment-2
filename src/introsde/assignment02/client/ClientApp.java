@@ -116,7 +116,13 @@ public class ClientApp {
     
 
     // Perform XML Request
-    response = performPostPutRequest(reqPath, "application/xml", "PUT", "application/xml", "<person><firstname>Ana XML</firstname></person>");
+    response = performPostPutRequest(
+                reqPath, 
+                "application/xml",
+                "PUT", 
+                "application/xml", 
+                "<person><firstname>Ana XML</firstname></person>"
+    );
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
@@ -139,6 +145,54 @@ public class ClientApp {
 
     // Print JSON Request
     printRequestDetails(3, "PUT", reqPath, "application/json", "application/json");
+
+    /*
+    *****************************************
+    * Performs Request #4 - Create a person
+    *****************************************
+    */
+    reqPath = "/persons";
+
+    // Perform XML Request
+    response = performPostPutRequest(
+                reqPath, 
+                "application/xml",
+                "POST", 
+                "application/xml", 
+                "<person>" +
+                  "<firstname>Chuck XML</firstname>" +
+                  "<lastname>Norris</lastname>" +
+                  "<birthdate>1945-01-01</birthdate>" +
+                "</person>"
+    );
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    if ( responseStatus == 201 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");
+
+    // Perform JSON Request
+    response = performPostPutRequest(
+                reqPath, 
+                "application/json",
+                "POST", 
+                "application/json", 
+                "{" +
+                  "\"firstname\": \"Chuck JSON\"," +
+                  "\"lastname\": \"Norris\"," +
+                  "\"birthdate\": \"1945-01-01\"" +
+                "}"
+    );
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    // Print JSON Request
+    printRequestDetails(4, "POST", reqPath, "application/json", "application/json");
   }
 
   private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
