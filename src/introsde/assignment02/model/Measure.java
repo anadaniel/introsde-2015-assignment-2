@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
   @NamedQuery(
     name = "Measure.findMeasuresFromPerson",
-    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND mt.name = :measureName ORDER BY m.measureId DESC"
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId AND mt.name = :measureName ORDER BY m.measureId DESC"
   ),
   @NamedQuery(
     name = "Measure.findCurrentMeasuresFromPerson",
