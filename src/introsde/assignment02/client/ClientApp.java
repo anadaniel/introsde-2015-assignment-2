@@ -45,7 +45,7 @@ public class ClientApp {
 
     /*
     *****************************************
-    * Performs Request #1 - Print people and count if there are more than 3 persons in the db
+    * Performs Request #1 - Get all Persons and count if there are more than 3 persons in the db
     *****************************************
     */
     reqPath = "/persons";
@@ -57,7 +57,7 @@ public class ClientApp {
 
     // Parse response body - People List
     xmlParser = new XmlParser(responseBody);
-    int peopleCount = xmlParser.countPeople();
+    int peopleCount = xmlParser.countNodes("person");
 
     if ( peopleCount >= 3 )
       requestResult = "OK";
@@ -70,6 +70,7 @@ public class ClientApp {
     // Perform JSON Request
     response = performGetRequest(reqPath, "application/json");
     responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
 
     // Print JSON Request
     printRequestDetails(1, "GET", reqPath, "application/json", "");
@@ -233,6 +234,38 @@ public class ClientApp {
 
     // Print XML Request
     printRequestDetails(1, "GET", reqPath, "application/xml", "application/xml");
+
+    /*
+    *****************************************
+    * Performs Request #9 - Get all Measure Types
+    *****************************************
+    */
+    reqPath = "/measureTypes";
+
+    // Perform XML Request
+    response = performGetRequest(reqPath, "application/xml");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    // Parse response body - People List
+    xmlParser = new XmlParser(responseBody);
+    int measureTypesCount = xmlParser.countNodes("measureType");
+
+    if ( measureTypesCount >= 3 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(9, "GET", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    response = performGetRequest(reqPath, "application/json");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    // Print JSON Request
+    printRequestDetails(9, "GET", reqPath, "application/json", "");
   }
 
   private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){

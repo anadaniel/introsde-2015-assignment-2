@@ -47,14 +47,16 @@ public class XmlParser {
   }
 
   /**
-  * Print a list of all people in the people.xml file
+  * Return the number of nodes with the given node name
+  * @param nodeName     The name of the nodes to be counted in the loaded xml.
+  * @return nodesCount  Int. The number of nodes found
   */
-  public int countPeople() throws XPathExpressionException {
-    XPathExpression expr = xpath.compile("//person");
-    NodeList personNodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+  public int countNodes(String nodeName) throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//" + nodeName);
+    NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 
-    int peopleCount = (int) personNodes.getLength();
-    return peopleCount;
+    int nodesCount = (int) nodes.getLength();
+    return nodesCount;
   }
 
   /**
