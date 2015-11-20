@@ -148,7 +148,7 @@ public class ClientApp {
 
     /*
     *****************************************
-    * Performs Request #4 - Create a person
+    * Performs Request #4 - Create a person XML
     *****************************************
     */
     reqPath = "/persons";
@@ -174,7 +174,14 @@ public class ClientApp {
       requestResult = "ERROR";
 
     // Print XML Request
-    printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");
+    printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");    
+
+    /*
+    *****************************************
+    * Performs Request #4 - Create a person JSON
+    *****************************************
+    */
+    reqPath = "/persons";
 
     // Perform JSON Request
     response = performPostPutRequest(
@@ -191,8 +198,41 @@ public class ClientApp {
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
 
+    if ( responseStatus == 201 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
     // Print JSON Request
     printRequestDetails(4, "POST", reqPath, "application/json", "application/json");
+
+    /*
+    *****************************************
+    * Performs Request #5 - Delete a person XML
+    *****************************************
+    */
+    reqPath = response.getLocation().getPath(); // Get the created person path from previous response
+
+    // Request
+    response = performDeleteRequest(reqPath);
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+    requestResult = "N/A"; // Performing the delete request is not enough to evaluate this request with 'OK' or 'ERROR'
+
+    // Print Request
+    printRequestDetails(5, "DELETE", reqPath, "", "");
+
+    response = performGetRequest(reqPath, "application/xml");
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
+
+    if ( responseStatus == 404 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(1, "GET", reqPath, "application/xml", "application/xml");
   }
 
   private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
@@ -203,15 +243,21 @@ public class ClientApp {
     return service.path(path).request().accept(accept).get();
   }
 
+  private static Response performDeleteRequest(String path){
+    return service.path(path).request().delete();
+  }
+
   private static void printRequestDetails(int n, String method, String path, String accept, String contentType) throws TransformerException {
     System.out.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
     System.out.println("=> Result: " + requestResult);
     System.out.println("=> HTTP Status: " + responseStatus);
 
-    if(accept == "application/xml")
-      prettyPrintXml(responseBody);
-    else
-      System.out.println(responseBody);
+    if( responseBody != null && !responseBody.isEmpty() ){
+      if(accept == "application/xml")
+        prettyPrintXml(responseBody);
+      else
+        System.out.println(responseBody);
+    }
 
     System.out.println("");
   }
