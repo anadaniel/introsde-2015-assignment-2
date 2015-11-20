@@ -20,8 +20,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-@Stateless // only used if the the application is deployed in a Java EE container
-@LocalBean // only used if the the application is deployed in a Java EE container
 public class PersonResource {
   @Context
   UriInfo uriInfo;
@@ -37,11 +35,17 @@ public class PersonResource {
 
   @GET
   @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Person getPerson() {
+  public Response getPerson() {
     Person person = Person.getPersonById(this.id);
-    if (person == null)
-      throw new RuntimeException("Get: Person with " + id + " not found");
-    return person;
+    Response res;
+
+    if (person != null){
+      res = Response.status(Status.OK).entity(person).location(uriInfo.getAbsolutePath()).build();
+    } else {
+      res = Response.status(Status.NOT_FOUND).build();
+    }
+    
+    return res;
   }
 
   @PUT

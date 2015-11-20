@@ -83,7 +83,8 @@ public class Person implements Serializable {
   public static Person getPersonById(int personId) {
     EntityManager em = Assignment02Dao.instance.createEntityManager();
     Person person = em.find(Person.class, personId);
-    em.refresh(person);
+    if(person != null)
+      em.refresh(person);
     Assignment02Dao.instance.closeConnections(em);
     return person;
   }
