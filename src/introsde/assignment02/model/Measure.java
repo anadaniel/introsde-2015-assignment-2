@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
   ),
   @NamedQuery(
     name = "Measure.findCurrentMeasuresFromPerson",
-    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid GROUP BY mt.measureTypeId"
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId GROUP BY mt.measureTypeId"
   )
 })
 @XmlRootElement
