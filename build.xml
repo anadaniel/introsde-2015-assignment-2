@@ -105,8 +105,8 @@
       </classpath>
     </java>
   </target>
-  <target name="start.client">
-    <echo message=">>>>>>>>>> Client Starting" />
+  <target name="start.client" depends="install">
+    <echo message=">>>>>>>>>> Client App Starting" />
     <java classname="introsde.assignment02.client.ClientApp" classpath="${build.dir}" fork="true">
       <arg value="$JAVA_OPTS -cp" />
       <classpath>
@@ -117,6 +117,8 @@
         </fileset>
       </classpath>
     </java>
+    <echo message=">>>>>>>>>> Client App Finished" />
+    <echo message=">>>>>>>>>> Check Logs" />
   </target>
 
   <!-- make sure you have created first the WebContent folder, including a META-INF folder, WEB-INF/web.xml file and WEB-INF/lib folder -->

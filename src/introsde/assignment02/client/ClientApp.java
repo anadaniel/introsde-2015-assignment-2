@@ -28,6 +28,8 @@ public class ClientApp {
   private static String responseBody;
   private static int responseStatus;
   private static String requestResult;
+  private static PrintWriter xmlLogWriter;
+  private static PrintWriter jsonLogWriter;
 
   public static void main(String[] args) throws Exception {
     System.out.println(">>>>> Server URL: http://127.0.1.1:3000");
@@ -39,6 +41,8 @@ public class ClientApp {
     serverUri = "http://127.0.1.1:3000";
     client = ClientBuilder.newClient(new ClientConfig());
     service = client.target( getBaseURI() );
+    xmlLogWriter = new PrintWriter("client-server-xml.log", "UTF-8");
+    jsonLogWriter = new PrintWriter("client-server-json.log", "UTF-8");
 
     /*
     **********************************************************************************
@@ -437,7 +441,7 @@ public class ClientApp {
     printRequestDetails(10, "PUT", reqPath, "application/json", "");
 
     // Perform XML Request
-    performGetRequest(reqPath, "application/json");
+    performGetRequest(reqPath, "application/xml");
 
     // Parse response body - get measure that was updated
     xmlParser = new XmlParser(responseBody);
@@ -455,6 +459,9 @@ public class ClientApp {
 
     // Print JSON Request
     printRequestDetails(7, "GET", reqPath, "application/json", "");
+
+    xmlLogWriter.close();
+    jsonLogWriter.close();
   }
 
   private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
@@ -478,18 +485,21 @@ public class ClientApp {
   }
 
   private static void printRequestDetails(int n, String method, String path, String accept, String contentType) throws TransformerException {
-    System.out.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
-    System.out.println("=> Result: " + requestResult);
-    System.out.println("=> HTTP Status: " + responseStatus);
+    if(accept == "application/xml")
+      printRequestDetailsXml(n, method, path, accept, contentType);
+    else
+      printRequestDetailsJson(n, method, path, accept, contentType);
+  }
 
-    if( responseBody != null && !responseBody.isEmpty() ){
-      if(accept == "application/xml")
-        prettyPrintXml(responseBody);
-      else
-        System.out.println(responseBody);
-    }
+  private static void printRequestDetailsXml(int n, String method, String path, String accept, String contentType) throws TransformerException {
+    xmlLogWriter.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
+    xmlLogWriter.println("=> Result: " + requestResult);
+    xmlLogWriter.println("=> HTTP Status: " + responseStatus);
 
-    System.out.println("");
+    if( responseBody != null && !responseBody.isEmpty() )
+      prettyPrintXml(responseBody);
+
+    xmlLogWriter.println("");
   }
 
   private static void prettyPrintXml(String input) throws TransformerException {
@@ -501,7 +511,18 @@ public class ClientApp {
     transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
     transformer.transform(inputXml, outputXml);
 
-    System.out.println(outputXml.getWriter().toString());
+    xmlLogWriter.println(outputXml.getWriter().toString());
+  }
+
+  private static void printRequestDetailsJson(int n, String method, String path, String accept, String contentType) throws TransformerException {
+    jsonLogWriter.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
+    jsonLogWriter.println("=> Result: " + requestResult);
+    jsonLogWriter.println("=> HTTP Status: " + responseStatus);
+
+    if( responseBody != null && !responseBody.isEmpty() )
+      jsonLogWriter.println(responseBody);
+
+    jsonLogWriter.println("");
   }
 
   private static URI getBaseURI() {
