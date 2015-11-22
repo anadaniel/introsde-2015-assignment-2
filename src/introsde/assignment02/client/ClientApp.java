@@ -310,6 +310,30 @@ public class ClientApp {
     responseStatus = 0;
 
     printRequestDetails(6, "", "", "", "");
+
+    /*
+    **********************************************************************************
+    * Performs Request #7 - Get a measure from the first person
+    **********************************************************************************
+    */
+    reqPath = "/persons/" + firstPersonId + "/" + measureType + "/" + measureId;
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/xml");
+
+    if(responseStatus == 200)
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(7, "GET", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    performGetRequest(reqPath, "application/json");
+
+    // Print JSON Request
+    printRequestDetails(7, "GET", reqPath, "application/json", "");
   }
 
   private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
