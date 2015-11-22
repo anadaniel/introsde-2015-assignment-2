@@ -34,18 +34,18 @@ public class ClientApp {
 
 
     /*
-    *****************************************
+    **********************************************************************************
     **************** CONFIG *****************
-    *****************************************
+    **********************************************************************************
     */
     serverUri = "http://127.0.1.1:3000";
     client = ClientBuilder.newClient(new ClientConfig());
     service = client.target( getBaseURI() );
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #1 - Get all Persons and count if there are more than 3 persons in the db
-    *****************************************
+    **********************************************************************************
     */
     reqPath = "/persons";
 
@@ -79,9 +79,9 @@ public class ClientApp {
     printRequestDetails(1, "GET", reqPath, "application/json", "");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #2 - Print first person
-    *****************************************
+    **********************************************************************************
     */
     String reqPath = "/persons/" + firstPersonId;
 
@@ -111,9 +111,9 @@ public class ClientApp {
     printRequestDetails(2, "GET", reqPath, "application/json", "");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #3 - Edit first person
-    *****************************************
+    **********************************************************************************
     */
     reqPath = "/persons/" + firstPersonId;
     
@@ -150,9 +150,9 @@ public class ClientApp {
     printRequestDetails(3, "PUT", reqPath, "application/json", "application/json");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #4 - Create a person XML
-    *****************************************
+    **********************************************************************************
     */
     reqPath = "/persons";
 
@@ -180,9 +180,9 @@ public class ClientApp {
     printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");    
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #4 - Create a person JSON
-    *****************************************
+    **********************************************************************************
     */
     reqPath = "/persons";
 
@@ -210,9 +210,9 @@ public class ClientApp {
     printRequestDetails(4, "POST", reqPath, "application/json", "application/json");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #5 - Delete a person XML
-    *****************************************
+    **********************************************************************************
     */
     reqPath = response.getLocation().getPath(); // Get the created person path from previous response
 
@@ -238,9 +238,9 @@ public class ClientApp {
     printRequestDetails(1, "GET", reqPath, "application/xml", "application/xml");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #9 - Get all Measure Types
-    *****************************************
+    **********************************************************************************
     */
     reqPath = "/measureTypes";
 
@@ -271,11 +271,10 @@ public class ClientApp {
     printRequestDetails(9, "GET", reqPath, "application/json", "");
 
     /*
-    *****************************************
+    **********************************************************************************
     * Performs Request #6 - Get the history of each Measure Type for the First and Last Person
-    *****************************************
+    **********************************************************************************
     */
-
     int personMeasuresCount = 0;
     int measureId = -1;
     String measureType = "";
@@ -301,7 +300,16 @@ public class ClientApp {
       }
 
       // Print XML Request
-      printRequestDetails(6, "GET", reqPath, "application/xml", "");
+      printRequestDetails(6, "GET", reqPath, "application/json", "");
+
+      // Perform JSON Request
+      response = performGetRequest(reqPath, "application/json");
+      responseBody = response.readEntity(String.class);
+      responseStatus = response.getStatus();
+      requestResult = "N/A";
+
+      // Print JSON Request
+      printRequestDetails(6, "GET", reqPath, "application/json", "");
 
       // Perform XML Request
       reqPath = "/persons/" + lastPersonId + "/" + measureTypes[i];
@@ -317,6 +325,15 @@ public class ClientApp {
       // Parse response body - Last Person measures
       xmlParser = new XmlParser(responseBody);
       personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
+
+      // Perform JSON Request
+      response = performGetRequest(reqPath, "application/json");
+      responseBody = response.readEntity(String.class);
+      responseStatus = response.getStatus();
+      requestResult = "N/A";
+
+      // Print JSON Request
+      printRequestDetails(6, "GET", reqPath, "application/json", "");
     }
 
     // Check if at least one measure (any type) had been registered for the first or last user
