@@ -334,6 +334,74 @@ public class ClientApp {
 
     // Print JSON Request
     printRequestDetails(7, "GET", reqPath, "application/json", "");
+
+    /*
+    **********************************************************************************
+    * Performs Request #6 - Get the history of a measure of a person
+    **********************************************************************************
+    */
+    reqPath = "/persons/" + firstPersonId + "/" + measureType;
+    requestResult = "N/A";
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/xml");
+
+    // Parse response body - First Person measures
+    xmlParser = new XmlParser(responseBody);
+    int firstPersonMeasuresCount = xmlParser.countNodes("measure");
+
+    // Print XML Request
+    printRequestDetails(6, "GET", reqPath, "application/xml", "");
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/json");
+
+    // Print JSON Request
+    printRequestDetails(6, "GET", reqPath, "application/json", "");
+
+    // Perform XML Request
+    performPostPutRequest(
+                reqPath, 
+                "application/xml",
+                "POST", 
+                "application/xml", 
+                "<measure><value>123</value></measure>"
+    );
+
+    // Print XML Request
+    printRequestDetails(8, "POST", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    performPostPutRequest(
+                reqPath, 
+                "application/json",
+                "POST", 
+                "application/json", 
+                "{ \"value\" : \"123\" }"
+    );
+
+    // Print JSON Request
+    printRequestDetails(8, "POST", reqPath, "application/json", "");
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/xml");
+
+    // Parse response body - First Person measures
+    xmlParser = new XmlParser(responseBody);
+
+    if( firstPersonMeasuresCount > xmlParser.countNodes("measures"))
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(6, "GET", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    performGetRequest(reqPath, "application/json");
+
+    // Print JSON Request
+    printRequestDetails(6, "GET", reqPath, "application/json", "");
   }
 
   private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
