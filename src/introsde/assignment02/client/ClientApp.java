@@ -28,7 +28,6 @@ public class ClientApp {
   private static String responseBody;
   private static int responseStatus;
   private static String requestResult;
-  private static int firstPersonId;
 
   public static void main(String[] args) throws Exception {
     System.out.println(">>>>> Server URL: http://127.0.1.1:3000");
@@ -59,6 +58,10 @@ public class ClientApp {
     xmlParser = new XmlParser(responseBody);
     int peopleCount = xmlParser.countNodes("person");
 
+    //Save first and last persons ids
+    int firstPersonId = xmlParser.getPersonId(1);
+    int lastPersonId = xmlParser.getPersonId(peopleCount);
+
     if ( peopleCount >= 3 )
       requestResult = "OK";
     else
@@ -80,7 +83,6 @@ public class ClientApp {
     * Performs Request #2 - Print first person
     *****************************************
     */
-    firstPersonId = xmlParser.getFirstPersonId();
     String reqPath = "/persons/" + firstPersonId;
 
     // Perform XML Request
@@ -267,6 +269,61 @@ public class ClientApp {
 
     // Print JSON Request
     printRequestDetails(9, "GET", reqPath, "application/json", "");
+
+    /*
+    *****************************************
+    * Performs Request #6 - Get the history of each Measure Type for the First and Last Person
+    *****************************************
+    */
+
+    int personMeasuresCount = 0;
+    int measureId;
+    String measureType;
+
+    for(int i = 0; i < measureTypesCount; i++){
+
+      // Perform XML Request
+      reqPath = "/persons/" + firstPersonId + "/" + measureTypes[i];
+
+      response = performGetRequest(reqPath, "application/xml");
+      responseBody = response.readEntity(String.class);
+      responseStatus = response.getStatus();
+      requestResult = "N/A";
+
+      // Parse response body - First Person measures
+      xmlParser = new XmlParser(responseBody);
+      personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
+
+      // Print XML Request
+      printRequestDetails(6, "GET", reqPath, "application/xml", "");
+
+
+      // Perform XML Request
+      reqPath = "/persons/" + lastPersonId + "/" + measureTypes[i];
+
+      response = performGetRequest(reqPath, "application/xml");
+      responseBody = response.readEntity(String.class);
+      responseStatus = response.getStatus();
+      requestResult = "N/A";
+
+      // Print XML Request
+      printRequestDetails(6, "GET", reqPath, "application/xml", "");
+
+      // Parse response body - Last Person measures
+      xmlParser = new XmlParser(responseBody);
+      personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
+    }
+
+    if(personMeasuresCount > 0)
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request - Result of requesting every measure history for the first and last person
+    responseBody = "";
+    responseStatus = 0;
+
+    printRequestDetails(6, "", "", "", "");
   }
 
   private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){

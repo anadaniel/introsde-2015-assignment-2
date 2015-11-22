@@ -49,7 +49,7 @@ public class XmlParser {
   /**
   * Return the number of nodes with the given node name
   * @param nodeName     The name of the nodes to be counted in the loaded xml.
-  * @return nodesCount  Int. The number of nodes found
+  * @return             The number of nodes found
   */
   public int countNodes(String nodeName) throws XPathExpressionException {
     XPathExpression expr = xpath.compile("//" + nodeName);
@@ -59,21 +59,24 @@ public class XmlParser {
   }
 
   /**
-  * Return the id of the first person in the people list
+  * Return the id of a person on the people list xml given it's position on the list
   * NOTE: The people list xml string should have been loaded before performing this method
+  * @param position   The position of the person we want the id from
+  * @return           The id of the person
   */
-  public int getFirstPersonId() throws XPathExpressionException {
-    XPathExpression expr = xpath.compile("//person[1]");
-    Node firstPerson = (Node) expr.evaluate(doc, XPathConstants.NODE);
+  public int getPersonId(int position) throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//person[" + position + "]");
+    Node person = (Node) expr.evaluate(doc, XPathConstants.NODE);
 
-    Element personElement = (Element) firstPerson;
+    Element personElement = (Element) person;
 
     return Integer.parseInt( personElement.getElementsByTagName("personId").item(0).getTextContent() );
   }
 
   /**
-  * Return the id of the first person in the people list
-  * NOTE: The person xml string should have been loaded before performing this method
+  * Return the firstname of a person
+  * NOTE: The single person xml string should have been loaded before performing this method
+  * @return     The firstname of a person
   */
   public String getPersonFirstname() throws XPathExpressionException {
     XPathExpression expr = xpath.compile("//firstname");
@@ -85,6 +88,7 @@ public class XmlParser {
   /**
   * Return a String array with the names of the available Measure Types
   * NOTE: The measure types xml string should have been loaded before performing this method
+  * @return     The measure types in a String array
   */
   public String[] getMeasureTypes() throws XPathExpressionException {
     XPathExpression expr = xpath.compile("//measureType");
