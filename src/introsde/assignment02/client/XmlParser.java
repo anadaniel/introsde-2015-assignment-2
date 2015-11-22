@@ -130,4 +130,18 @@ public class XmlParser {
 
     return measureElement.getElementsByTagName("measureName").item(0).getTextContent();
   }
+
+  /**
+  * Return the value of a measure
+  * NOTE: The measures list xml string should have been loaded before performing this method
+  * @return     The value a measure
+  */
+  public String getMeasureValue() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//measure[1]");
+    Node measureNode = (Node) expr.evaluate(doc, XPathConstants.NODE);
+
+    Element measureElement = (Element) measureNode;
+
+    return measureElement.getElementsByTagName("value").item(0).getTextContent();
+  }
 }

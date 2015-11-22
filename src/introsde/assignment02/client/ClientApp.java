@@ -42,7 +42,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #1 - Get all Persons and count if there are more than 3 persons in the db
+    * STEP 3.1 - Get all Persons and count if there are more than 3 persons in the db
     **********************************************************************************
     */
     reqPath = "/persons";
@@ -74,7 +74,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #2 - Print first person
+    * STEP 3.2 - Print first person
     **********************************************************************************
     */
     String reqPath = "/persons/" + firstPersonId;
@@ -102,7 +102,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #3 - Edit first person
+    * STEP 3.3 - Edit first person
     **********************************************************************************
     */
     reqPath = "/persons/" + firstPersonId;
@@ -137,7 +137,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #4 - Create a person XML
+    * STEP 3.4 - Create a person XML
     **********************************************************************************
     */
     reqPath = "/persons";
@@ -161,14 +161,7 @@ public class ClientApp {
       requestResult = "ERROR";
 
     // Print XML Request
-    printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");    
-
-    /*
-    **********************************************************************************
-    * Performs Request #4 - Create a person JSON
-    **********************************************************************************
-    */
-    reqPath = "/persons";
+    printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");
 
     // Perform JSON Request
     performPostPutRequest(
@@ -193,7 +186,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #5 - Delete a person XML
+    * STEP 3.5 - Delete a person XML
     **********************************************************************************
     */
     reqPath = response.getLocation().getPath(); // Get the created person path from previous response
@@ -218,7 +211,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #9 - Get all Measure Types
+    * STEP 3.6 - Get all Measure Types
     **********************************************************************************
     */
     reqPath = "/measureTypes";
@@ -247,7 +240,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #6 - Get the history of each Measure Type for the First and Last Person
+    * STEP 3.7 - Get the history of each Measure Type for the First and Last Person
     **********************************************************************************
     */
     int personMeasuresCount = 0;
@@ -313,7 +306,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #7 - Get a measure from the first person
+    * STEP 3.8 - Get a measure from the first person
     **********************************************************************************
     */
     reqPath = "/persons/" + firstPersonId + "/" + measureType + "/" + measureId;
@@ -337,7 +330,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * Performs Request #6 - Get the history of a measure of a person
+    * STEP 3.9 - Create a new measure for a person
     **********************************************************************************
     */
     reqPath = "/persons/" + firstPersonId + "/" + measureType;
@@ -353,7 +346,7 @@ public class ClientApp {
     // Print XML Request
     printRequestDetails(6, "GET", reqPath, "application/xml", "");
 
-    // Perform XML Request
+    // Perform JSON Request
     performGetRequest(reqPath, "application/json");
 
     // Print JSON Request
@@ -367,6 +360,13 @@ public class ClientApp {
                 "application/xml", 
                 "<measure><value>123</value></measure>"
     );
+
+    // Parse response body - Created measure
+    xmlParser = new XmlParser(responseBody);
+
+    // Save values for STEP 3.10
+    int createdMeasureId = xmlParser.getMeasureId();
+    String createdMeasureValue = xmlParser.getMeasureValue();
 
     // Print XML Request
     printRequestDetails(8, "POST", reqPath, "application/xml", "");
@@ -402,6 +402,59 @@ public class ClientApp {
 
     // Print JSON Request
     printRequestDetails(6, "GET", reqPath, "application/json", "");
+
+    /*
+    **********************************************************************************
+    * STEP 3.10 - Edit a measure for a person
+    **********************************************************************************
+    */
+    reqPath = "/persons/" + firstPersonId + "/" + measureType + "/" + createdMeasureId;
+
+    // Perform XML Request
+    performPostPutRequest(
+                reqPath, 
+                "application/xml",
+                "PUT", 
+                "application/xml", 
+                "<measure><value>456</value></measure>"
+    );
+
+    requestResult = "N/A"; // Just performing the PUT request is not enough to determine the result of this request
+
+    // Print XML Request
+    printRequestDetails(10, "PUT", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    performPostPutRequest(
+                reqPath, 
+                "application/json",
+                "PUT", 
+                "application/json", 
+                "{\"value\" : \"456\" }"
+    );
+
+    // Print XML Request
+    printRequestDetails(10, "PUT", reqPath, "application/json", "");
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/json");
+
+    // Parse response body - get measure that was updated
+    xmlParser = new XmlParser(responseBody);
+
+    if ( createdMeasureValue != xmlParser.getMeasureValue())
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(7, "GET", reqPath, "application/xml", "");
+
+    // Perform JSON Request
+    performGetRequest(reqPath, "application/json");
+
+    // Print JSON Request
+    printRequestDetails(7, "GET", reqPath, "application/json", "");
   }
 
   private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
