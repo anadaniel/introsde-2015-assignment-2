@@ -31,11 +31,9 @@ public class ClientApp {
 
   public static void main(String[] args) throws Exception {
     System.out.println(">>>>> Server URL: http://127.0.1.1:3000");
-
-
     /*
     **********************************************************************************
-    **************** CONFIG *****************
+    ************************************ CONFIG **************************************
     **********************************************************************************
     */
     serverUri = "http://127.0.1.1:3000";
@@ -50,9 +48,7 @@ public class ClientApp {
     reqPath = "/persons";
 
     // Perform XML Request
-    response = performGetRequest(reqPath, "application/xml");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performGetRequest(reqPath, "application/xml");
 
     // Parse response body - People List
     xmlParser = new XmlParser(responseBody);
@@ -71,10 +67,8 @@ public class ClientApp {
     printRequestDetails(1, "GET", reqPath, "application/xml", "");
 
     // Perform JSON Request
-    response = performGetRequest(reqPath, "application/json");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
-
+    performGetRequest(reqPath, "application/json");
+    
     // Print JSON Request
     printRequestDetails(1, "GET", reqPath, "application/json", "");
 
@@ -86,9 +80,7 @@ public class ClientApp {
     String reqPath = "/persons/" + firstPersonId;
 
     // Perform XML Request
-    response = performGetRequest(reqPath, "application/xml");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performGetRequest(reqPath, "application/xml");
 
     // Parse response body - Single Person
     xmlParser = new XmlParser(responseBody);
@@ -103,9 +95,7 @@ public class ClientApp {
     printRequestDetails(2, "GET", reqPath, "application/xml", "");
 
     // Perform JSON Request
-    response = performGetRequest(reqPath, "application/json");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performGetRequest(reqPath, "application/json");
 
     // Print JSON Request
     printRequestDetails(2, "GET", reqPath, "application/json", "");
@@ -119,15 +109,13 @@ public class ClientApp {
     
 
     // Perform XML Request
-    response = performPostPutRequest(
+    performPostPutRequest(
                 reqPath, 
                 "application/xml",
                 "PUT", 
                 "application/xml", 
                 "<person><firstname>Ana XML</firstname></person>"
     );
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
 
     // Parse response body - Single Person
     xmlParser = new XmlParser(responseBody);
@@ -142,10 +130,8 @@ public class ClientApp {
     printRequestDetails(3, "PUT", reqPath, "application/xml", "application/xml");
 
     // Perform JSON Request
-    response = performPostPutRequest(reqPath, "application/json", "PUT", "application/json", "{\"firstname\":\"Ana JSON\"}");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
-
+    performPostPutRequest(reqPath, "application/json", "PUT", "application/json", "{\"firstname\":\"Ana JSON\"}");
+    
     // Print JSON Request
     printRequestDetails(3, "PUT", reqPath, "application/json", "application/json");
 
@@ -157,7 +143,7 @@ public class ClientApp {
     reqPath = "/persons";
 
     // Perform XML Request
-    response = performPostPutRequest(
+    performPostPutRequest(
                 reqPath, 
                 "application/xml",
                 "POST", 
@@ -168,8 +154,6 @@ public class ClientApp {
                   "<birthdate>1945-01-01</birthdate>" +
                 "</person>"
     );
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
 
     if ( responseStatus == 201 )
       requestResult = "OK";
@@ -187,7 +171,7 @@ public class ClientApp {
     reqPath = "/persons";
 
     // Perform JSON Request
-    response = performPostPutRequest(
+    performPostPutRequest(
                 reqPath, 
                 "application/json",
                 "POST", 
@@ -198,8 +182,6 @@ public class ClientApp {
                   "\"birthdate\": \"1945-01-01\"" +
                 "}"
     );
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
 
     if ( responseStatus == 201 )
       requestResult = "OK";
@@ -217,17 +199,14 @@ public class ClientApp {
     reqPath = response.getLocation().getPath(); // Get the created person path from previous response
 
     // Request
-    response = performDeleteRequest(reqPath);
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performDeleteRequest(reqPath);
     requestResult = "N/A"; // Performing the delete request is not enough to evaluate this request with 'OK' or 'ERROR'
 
     // Print Request
     printRequestDetails(5, "DELETE", reqPath, "", "");
 
-    response = performGetRequest(reqPath, "application/xml");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    // Perform XML Request
+    performGetRequest(reqPath, "application/xml");
 
     if ( responseStatus == 404 )
       requestResult = "OK";
@@ -245,9 +224,7 @@ public class ClientApp {
     reqPath = "/measureTypes";
 
     // Perform XML Request
-    response = performGetRequest(reqPath, "application/xml");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performGetRequest(reqPath, "application/xml");
 
     // Parse response body - Measure Types
     xmlParser = new XmlParser(responseBody);
@@ -263,9 +240,7 @@ public class ClientApp {
     printRequestDetails(9, "GET", reqPath, "application/xml", "");
 
     // Perform JSON Request
-    response = performGetRequest(reqPath, "application/json");
-    responseBody = response.readEntity(String.class);
-    responseStatus = response.getStatus();
+    performGetRequest(reqPath, "application/json");
 
     // Print JSON Request
     printRequestDetails(9, "GET", reqPath, "application/json", "");
@@ -278,16 +253,13 @@ public class ClientApp {
     int personMeasuresCount = 0;
     int measureId = -1;
     String measureType = "";
+    requestResult = "N/A";
 
     for(int i = 0; i < measureTypesCount; i++){
-
-      // Perform XML Request
       reqPath = "/persons/" + firstPersonId + "/" + measureTypes[i];
 
-      response = performGetRequest(reqPath, "application/xml");
-      responseBody = response.readEntity(String.class);
-      responseStatus = response.getStatus();
-      requestResult = "N/A";
+      // Perform XML Request
+      performGetRequest(reqPath, "application/xml");
 
       // Parse response body - First Person measures
       xmlParser = new XmlParser(responseBody);
@@ -300,13 +272,10 @@ public class ClientApp {
       }
 
       // Print XML Request
-      printRequestDetails(6, "GET", reqPath, "application/json", "");
+      printRequestDetails(6, "GET", reqPath, "application/xml", "");
 
       // Perform JSON Request
-      response = performGetRequest(reqPath, "application/json");
-      responseBody = response.readEntity(String.class);
-      responseStatus = response.getStatus();
-      requestResult = "N/A";
+      performGetRequest(reqPath, "application/json");
 
       // Print JSON Request
       printRequestDetails(6, "GET", reqPath, "application/json", "");
@@ -314,10 +283,7 @@ public class ClientApp {
       // Perform XML Request
       reqPath = "/persons/" + lastPersonId + "/" + measureTypes[i];
 
-      response = performGetRequest(reqPath, "application/xml");
-      responseBody = response.readEntity(String.class);
-      responseStatus = response.getStatus();
-      requestResult = "N/A";
+      performGetRequest(reqPath, "application/xml");
 
       // Print XML Request
       printRequestDetails(6, "GET", reqPath, "application/xml", "");
@@ -327,10 +293,7 @@ public class ClientApp {
       personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
 
       // Perform JSON Request
-      response = performGetRequest(reqPath, "application/json");
-      responseBody = response.readEntity(String.class);
-      responseStatus = response.getStatus();
-      requestResult = "N/A";
+      performGetRequest(reqPath, "application/json");
 
       // Print JSON Request
       printRequestDetails(6, "GET", reqPath, "application/json", "");
@@ -349,16 +312,24 @@ public class ClientApp {
     printRequestDetails(6, "", "", "", "");
   }
 
-  private static Response performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
-    return service.path(path).request().accept(accept).build(method, Entity.entity(requestBody, contentType)).invoke();
+  private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
+    response = service.path(path).request().accept(accept).build(method, Entity.entity(requestBody, contentType)).invoke();
+    loadResponseBodyAndStatus();
   }
 
-  private static Response performGetRequest(String path, String accept){
-    return service.path(path).request().accept(accept).get();
+  private static void performGetRequest(String path, String accept){
+    response = service.path(path).request().accept(accept).get();
+    loadResponseBodyAndStatus();
   }
 
-  private static Response performDeleteRequest(String path){
-    return service.path(path).request().delete();
+  private static void performDeleteRequest(String path){
+    response = service.path(path).request().delete();
+    loadResponseBodyAndStatus();
+  }
+
+  private static void loadResponseBodyAndStatus(){
+    responseBody = response.readEntity(String.class);
+    responseStatus = response.getStatus();
   }
 
   private static void printRequestDetails(int n, String method, String path, String accept, String contentType) throws TransformerException {
