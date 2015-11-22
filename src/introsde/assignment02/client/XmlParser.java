@@ -102,4 +102,32 @@ public class XmlParser {
 
     return measureTypeNames;
   }
+
+  /**
+  * Return the id of a measure
+  * NOTE: The measures list xml string should have been loaded before performing this method
+  * @return     The measure id of the first measure in the list
+  */
+  public int getMeasureId() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//measure[1]");
+    Node measureNode = (Node) expr.evaluate(doc, XPathConstants.NODE);
+
+    Element measureElement = (Element) measureNode;
+
+    return Integer.parseInt( measureElement.getElementsByTagName("mid").item(0).getTextContent() );
+  }
+
+  /**
+  * Return the name of the measure type of a measure
+  * NOTE: The measures list xml string should have been loaded before performing this method
+  * @return     The name of the measure type of the first measure in the list
+  */
+  public String getMeasureName() throws XPathExpressionException {
+    XPathExpression expr = xpath.compile("//measure[1]");
+    Node measureNode = (Node) expr.evaluate(doc, XPathConstants.NODE);
+
+    Element measureElement = (Element) measureNode;
+
+    return measureElement.getElementsByTagName("measureName").item(0).getTextContent();
+  }
 }

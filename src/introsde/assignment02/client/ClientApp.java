@@ -277,8 +277,8 @@ public class ClientApp {
     */
 
     int personMeasuresCount = 0;
-    int measureId;
-    String measureType;
+    int measureId = -1;
+    String measureType = "";
 
     for(int i = 0; i < measureTypesCount; i++){
 
@@ -294,9 +294,14 @@ public class ClientApp {
       xmlParser = new XmlParser(responseBody);
       personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
 
+      // Save a measure id and a measure type. Only if it hasn't been saved
+      if ( personMeasuresCount > 0 && measureId == -1 ){
+        measureId = xmlParser.getMeasureId();
+        measureType = xmlParser.getMeasureName();
+      }
+
       // Print XML Request
       printRequestDetails(6, "GET", reqPath, "application/xml", "");
-
 
       // Perform XML Request
       reqPath = "/persons/" + lastPersonId + "/" + measureTypes[i];
@@ -314,6 +319,7 @@ public class ClientApp {
       personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
     }
 
+    // Check if at least one measure (any type) had been registered for the first or last user
     if(personMeasuresCount > 0)
       requestResult = "OK";
     else
