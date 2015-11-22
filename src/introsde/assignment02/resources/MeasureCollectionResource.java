@@ -13,7 +13,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class MeasureCollectionResource {
   @Context
@@ -40,8 +44,12 @@ public class MeasureCollectionResource {
   @POST
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Measure createMeasure(Measure measure) throws IOException {
-    return Measure.createMeasure(measure, this.personId, this.measureName);
+  public Response createMeasure(Measure measure) throws IOException {
+    Measure createdMeasure = Measure.createMeasure(measure, this.personId, this.measureName);
+    URI location = UriBuilder.fromUri(uriInfo.getAbsolutePath())
+                             .path(Integer.toString(createdMeasure.getPersonId()))
+                             .build();
+    return Response.status(Status.CREATED).entity(createdMeasure).location(location).build();
   }
 
   // Let the MeasureResource class to handle operations on a single Person
