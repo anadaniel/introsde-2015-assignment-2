@@ -41,6 +41,7 @@ public class PersonCollectionResource {
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response createPerson(Person person) throws IOException {
+    person.setMeasures(person.getCurrentMeasures());    
     Person createdPerson = Person.createPerson(person);
     URI location = UriBuilder.fromUri(uriInfo.getAbsolutePath())
                              .path(Integer.toString(createdPerson.getPersonId()))

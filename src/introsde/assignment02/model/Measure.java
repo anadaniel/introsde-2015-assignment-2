@@ -47,7 +47,7 @@ public class Measure implements Serializable {
   private MeasureType measureType;
 
   @ManyToOne
-  @JoinColumn(name="personId",referencedColumnName="personId")
+  @JoinColumn(name="personId",referencedColumnName="personId", insertable=false, updatable=false)
   private Person person;
   
   // getters
@@ -81,6 +81,9 @@ public class Measure implements Serializable {
     this.person = person;
   }
   public void setMeasureType(MeasureType measureType){
+    if( measureType.getMeasureTypeId() == 0 ) // New measure with just the measure type name set
+      measureType = MeasureType.findFromName(measureType.getName()); // Set the measureType from the name
+    
     this.measureType = measureType;
   }
   public void setCreated(Date created){

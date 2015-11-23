@@ -35,7 +35,8 @@ public class Person implements Serializable {
   @Column(name="birthdate")
   private Date birthdate;
 
-  @OneToMany(mappedBy="person",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+  @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+  @JoinColumn(name="personId", referencedColumnName="personId")
   private List<Measure> measures;
 
   @Transient
@@ -62,7 +63,9 @@ public class Person implements Serializable {
   @XmlElementWrapper(name="healthProfile")
   @XmlElement(name="measure")
   public List<Measure> getCurrentMeasures(){
-    this.currentMeasures = Measure.getCurrentMeasuresFromPerson(this.personId);
+    if (this.currentMeasures == null) // wWhen the currentMeasures is not empty it means it's readding a person that's coming from a post
+      this.currentMeasures = Measure.getCurrentMeasuresFromPerson(this.personId);
+
     return currentMeasures;
   }
   
@@ -81,6 +84,9 @@ public class Person implements Serializable {
   }
   public void setMeasures(List<Measure> measures){
     this.measures = measures;
+  }
+  public void setCurrentMeasures(List<Measure> currentMeasures){
+    this.currentMeasures = currentMeasures;
   }
 
   public static List<Person> getAll() {
