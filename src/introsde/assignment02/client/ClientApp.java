@@ -169,8 +169,6 @@ public class ClientApp {
                 "</person>"
     );
 
-
-
     if ( responseStatus == 201 )
       requestResult = "OK";
     else
@@ -178,6 +176,38 @@ public class ClientApp {
 
     // Print XML Request
     printRequestDetails(4, "POST", reqPath, "application/xml", "application/xml");
+
+    /*
+    **********************************************************************************
+    * STEP 3.5 - Delete a person XML
+    **********************************************************************************
+    */
+    reqPath = response.getLocation().getPath(); // Get the created person path from previous response
+
+    // Request
+    performDeleteRequest(reqPath);
+    requestResult = "N/A"; // Performing the delete request is not enough to evaluate this request with 'OK' or 'ERROR'
+
+    // Print Request
+    printRequestDetails(5, "DELETE", reqPath, "application/xml", "");
+
+    // Perform XML Request
+    performGetRequest(reqPath, "application/xml");
+
+    if ( responseStatus == 404 )
+      requestResult = "OK";
+    else
+      requestResult = "ERROR";
+
+    // Print XML Request
+    printRequestDetails(1, "GET", reqPath, "application/xml", "application/xml");
+
+    /*
+    **********************************************************************************
+    * STEP 3.4 - Create a person JSON
+    **********************************************************************************
+    */
+    reqPath = "/persons";
 
     // Perform JSON Request
     performPostPutRequest(
@@ -202,7 +232,7 @@ public class ClientApp {
 
     /*
     **********************************************************************************
-    * STEP 3.5 - Delete a person XML
+    * STEP 3.5 - Delete a person JSON
     **********************************************************************************
     */
     reqPath = response.getLocation().getPath(); // Get the created person path from previous response
@@ -212,10 +242,10 @@ public class ClientApp {
     requestResult = "N/A"; // Performing the delete request is not enough to evaluate this request with 'OK' or 'ERROR'
 
     // Print Request
-    printRequestDetails(5, "DELETE", reqPath, "", "");
+    printRequestDetails(5, "DELETE", reqPath, "application/json", "");
 
     // Perform XML Request
-    performGetRequest(reqPath, "application/xml");
+    performGetRequest(reqPath, "application/json");
 
     if ( responseStatus == 404 )
       requestResult = "OK";
@@ -223,7 +253,7 @@ public class ClientApp {
       requestResult = "ERROR";
 
     // Print XML Request
-    printRequestDetails(1, "GET", reqPath, "application/xml", "application/xml");
+    printRequestDetails(1, "GET", reqPath, "application/json", "application/json");
 
     /*
     **********************************************************************************
