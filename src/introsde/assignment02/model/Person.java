@@ -118,6 +118,7 @@ public class Person implements Serializable {
 
   public static Person syncPerson(Person oldPerson, Person updatedPerson) {
     updatedPerson.setPersonId(oldPerson.getPersonId());
+    updatedPerson.setMeasures(oldPerson.getMeasures()); // Prevent Measures to be lost when updating a person
 
     if (updatedPerson.getFirstname() == null)
       updatedPerson.setFirstname(oldPerson.getFirstname());

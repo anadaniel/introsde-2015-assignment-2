@@ -47,7 +47,7 @@ public class Measure implements Serializable {
   private MeasureType measureType;
 
   @ManyToOne
-  @JoinColumn(name="personId",referencedColumnName="personId", insertable=false, updatable=false)
+  @JoinColumn(name="personId", referencedColumnName="personId")
   private Person person;
   
   // getters
