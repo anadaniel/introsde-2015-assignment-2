@@ -32,13 +32,13 @@ public class ClientApp {
   private static PrintWriter jsonLogWriter;
 
   public static void main(String[] args) throws Exception {
-    System.out.println(">>>>> Server URL: http://127.0.1.1:3000");
+    System.out.println(">>>>> Server URL: http://anadaniel-introsde-a02.herokuapp.com");
     /*
     **********************************************************************************
     ************************************ CONFIG **************************************
     **********************************************************************************
     */
-    serverUri = "http://127.0.1.1:3000";
+    serverUri = "http://anadaniel-introsde-a02.herokuapp.com";
     client = ClientBuilder.newClient(new ClientConfig());
     service = client.target( getBaseURI() );
     xmlLogWriter = new PrintWriter("client-server-xml.log", "UTF-8");
