@@ -156,8 +156,20 @@ public class ClientApp {
                   "<firstname>Chuck XML</firstname>" +
                   "<lastname>Norris</lastname>" +
                   "<birthdate>1945-01-01</birthdate>" +
+                  "<healthProfile>" +
+                    "<measure>" +
+                      "<value>190</value>" +
+                      "<measureName>height</measureName>" +
+                    "</measure>" +
+                    "<measure>" +
+                      "<value>90</value>" +
+                      "<measureName>weight</measureName>" +
+                    "</measure>" +
+                  "</healthProfile>" +
                 "</person>"
     );
+
+
 
     if ( responseStatus == 201 )
       requestResult = "OK";
@@ -263,7 +275,7 @@ public class ClientApp {
       personMeasuresCount = personMeasuresCount + xmlParser.countNodes("measure");
 
       // Save a measure id and a measure type. Only if it hasn't been saved
-      if ( personMeasuresCount > 0 && measureId == -1 ){
+      if ( xmlParser.countNodes("measure") > 0 && measureId == -1 ){
         measureId = xmlParser.getMeasureId();
         measureType = xmlParser.getMeasureName();
       }
