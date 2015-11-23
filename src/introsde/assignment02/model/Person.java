@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
 @Entity  // indicates that this class is an entity to persist in DB
 @Table(name="Person") // to whole table must be persisted 
 @NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
@@ -34,6 +35,9 @@ public class Person implements Serializable {
   @Column(name="birthdate")
   private Date birthdate;
 
+  @OneToMany(mappedBy="person",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+  private List<Measure> measures;
+
   @Transient
   private List<Measure> currentMeasures;
   
@@ -49,6 +53,10 @@ public class Person implements Serializable {
   }
   public Date getBirthdate(){
     return birthdate;
+  }
+  @XmlTransient
+  public List<Measure> getMeasures(){
+    return measures;
   }
 
   @XmlElementWrapper(name="healthProfile")
@@ -70,6 +78,9 @@ public class Person implements Serializable {
   }
   public void setBirthdate(Date birthdate){
     this.birthdate = birthdate;
+  }
+  public void setMeasures(List<Measure> measures){
+    this.measures = measures;
   }
 
   public static List<Person> getAll() {

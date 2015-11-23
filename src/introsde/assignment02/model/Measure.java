@@ -1,7 +1,6 @@
 package introsde.assignment02.model;
 
 import introsde.assignment02.dao.Assignment02Dao;
-import introsde.assignment02.model.MeasureType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,11 +17,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
   @NamedQuery(
     name = "Measure.findMeasuresFromPerson",
-    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId AND mt.name = :measureName ORDER BY m.measureId DESC"
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.person.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId AND mt.name = :measureName ORDER BY m.measureId DESC"
   ),
   @NamedQuery(
     name = "Measure.findCurrentMeasuresFromPerson",
-    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId GROUP BY mt.measureTypeId"
+    query = "SELECT m FROM Measure m, MeasureType mt WHERE m.person.personId = :pid AND m.measureType.measureTypeId = mt.measureTypeId GROUP BY mt.measureTypeId"
   )
 })
 @XmlRootElement
@@ -39,8 +38,6 @@ public class Measure implements Serializable {
   private int measureId;
   @Column(name="value")
   private String value;
-  @Column(name="personId")
-  private int personId;
   @Temporal(TemporalType.DATE)
   @Column(name="created")
   private Date created;
@@ -48,6 +45,10 @@ public class Measure implements Serializable {
   @ManyToOne
   @JoinColumn(name="measureTypeId",referencedColumnName="measureTypeId")
   private MeasureType measureType;
+
+  @ManyToOne
+  @JoinColumn(name="personId",referencedColumnName="personId")
+  private Person person;
   
   // getters
   @XmlElement(name="mid")
@@ -58,8 +59,8 @@ public class Measure implements Serializable {
     return value;
   }
   @XmlTransient
-  public int getPersonId(){
-    return personId;
+  public Person getPerson(){
+    return person;
   }
   @XmlElement(name="measureName")
   public MeasureType getMeasureType(){
@@ -76,8 +77,8 @@ public class Measure implements Serializable {
   public void setValue(String value){
     this.value = value;
   }
-  public void setPersonId(int personId){
-    this.personId = personId;
+  public void setPerson(Person person){
+    this.person = person;
   }
   public void setMeasureType(MeasureType measureType){
     this.measureType = measureType;
@@ -118,7 +119,7 @@ public class Measure implements Serializable {
   }
 
   public static Measure createMeasure(Measure measure, int personId, String measureName) {
-    measure.setPersonId(personId);
+    measure.setPerson(Person.getPersonById(personId));
     measure.setMeasureTypeFromMeasureName(measureName);
     measure.setCreated(new Date());
 
@@ -134,7 +135,7 @@ public class Measure implements Serializable {
   public static Measure updateMeasure(Measure oldMeasure, Measure updatedMeasure) {
     //When updating a measure only the value attribute can be changed
     updatedMeasure.setMeasureId(oldMeasure.getMeasureId());
-    updatedMeasure.setPersonId(oldMeasure.getPersonId());
+    updatedMeasure.setPerson(oldMeasure.getPerson());
     updatedMeasure.setMeasureType(oldMeasure.getMeasureType());
 
     EntityManager em = Assignment02Dao.instance.createEntityManager(); 

@@ -47,7 +47,7 @@ public class MeasureCollectionResource {
   public Response createMeasure(Measure measure) throws IOException {
     Measure createdMeasure = Measure.createMeasure(measure, this.personId, this.measureName);
     URI location = UriBuilder.fromUri(uriInfo.getAbsolutePath())
-                             .path(Integer.toString(createdMeasure.getPersonId()))
+                             .path(Integer.toString(createdMeasure.getMeasureId()))
                              .build();
     return Response.status(Status.CREATED).entity(createdMeasure).location(location).build();
   }
