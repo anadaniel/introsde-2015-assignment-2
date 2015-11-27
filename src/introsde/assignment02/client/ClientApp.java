@@ -17,6 +17,12 @@ import javax.xml.transform.stream.*;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.parsers.ParserConfigurationException;
 
+/**
+ * The Client class is used to evaluate the server implementation of the assignment.
+ * 
+ * @author anadaniel
+ *
+ */
 public class ClientApp {
 
   private static Client client;
@@ -31,6 +37,13 @@ public class ClientApp {
   private static PrintWriter xmlLogWriter;
   private static PrintWriter jsonLogWriter;
 
+  /**
+   * The main method runs every request according to the specifications of the
+   * assignment.
+   * 
+   * @param args
+   * @throws Exception
+   */
   public static void main(String[] args) throws Exception {
     System.out.println(">>>>> Server URL: http://anadaniel-introsde-a02.herokuapp.com");
     /*
@@ -506,26 +519,61 @@ public class ClientApp {
     jsonLogWriter.close();
   }
 
+  /**
+   * Performs a POST or PUT request depending on the method specified. 
+   * Saves the result in the global response variable.
+   * 
+   * @param path
+   * @param accept
+   * @param method
+   * @param contentType
+   * @param requestBody
+   */
   private static void performPostPutRequest(String path, String accept, String method, String contentType, String requestBody){
     response = service.path(path).request().accept(accept).build(method, Entity.entity(requestBody, contentType)).invoke();
     loadResponseBodyAndStatus();
   }
 
+  /**
+   * Performs a GET request. Saves the result in the global response variable.
+   * 
+   * @param path
+   * @param accept
+   */
   private static void performGetRequest(String path, String accept){
     response = service.path(path).request().accept(accept).get();
     loadResponseBodyAndStatus();
   }
 
+  /**
+   * Performs a DELETE request. Saves the result in the global response variable.
+   * 
+   * @param path
+   */
   private static void performDeleteRequest(String path){
     response = service.path(path).request().delete();
     loadResponseBodyAndStatus();
   }
 
+  /**
+   * It saves the reponse body and the response status in variables.
+   * This method is called after every request is made.
+   */
   private static void loadResponseBodyAndStatus(){
     responseBody = response.readEntity(String.class);
     responseStatus = response.getStatus();
   }
 
+  /**
+   * Prints into a log file the details of the requests made
+   * 
+   * @param n
+   * @param method
+   * @param path
+   * @param accept
+   * @param contentType
+   * @throws TransformerException
+   */
   private static void printRequestDetails(int n, String method, String path, String accept, String contentType) throws TransformerException {
     if(accept == "application/xml")
       printRequestDetailsXml(n, method, path, accept, contentType);
@@ -533,6 +581,16 @@ public class ClientApp {
       printRequestDetailsJson(n, method, path, accept, contentType);
   }
 
+  /**
+   * Prints the logs for the XML Requests
+   * 
+   * @param n
+   * @param method
+   * @param path
+   * @param accept
+   * @param contentType
+   * @throws TransformerException
+   */
   private static void printRequestDetailsXml(int n, String method, String path, String accept, String contentType) throws TransformerException {
     xmlLogWriter.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
     xmlLogWriter.println("=> Result: " + requestResult);
@@ -544,6 +602,12 @@ public class ClientApp {
     xmlLogWriter.println("");
   }
 
+  /**
+   * Method used to print XML responses with the correct identation
+   * 
+   * @param input					The xml in string
+   * @throws TransformerException
+   */
   private static void prettyPrintXml(String input) throws TransformerException {
     Source inputXml = new StreamSource(new StringReader(input));
     StreamResult outputXml = new StreamResult(new StringWriter());
@@ -556,6 +620,16 @@ public class ClientApp {
     xmlLogWriter.println(outputXml.getWriter().toString());
   }
 
+  /**
+   * Prints the logs for the JSON Requests
+   * 
+   * @param n
+   * @param method
+   * @param path
+   * @param accept
+   * @param contentType
+   * @throws TransformerException
+   */
   private static void printRequestDetailsJson(int n, String method, String path, String accept, String contentType) throws TransformerException {
     jsonLogWriter.println("Request #" + n + ": " + method + " " + path + " Accept:" + accept + " Content-type: " + contentType ); 
     jsonLogWriter.println("=> Result: " + requestResult);
@@ -566,7 +640,10 @@ public class ClientApp {
 
     jsonLogWriter.println("");
   }
-
+  
+  /**
+   * @return 	THe URI object of the server
+   */
   private static URI getBaseURI() {
     return UriBuilder.fromUri(serverUri).build();
   }
