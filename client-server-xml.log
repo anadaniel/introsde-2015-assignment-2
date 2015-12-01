@@ -1,0 +1,298 @@
+Request #1: GET /persons Accept:application/xml Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><people>
+  <person>
+    <personId>1</personId>
+    <firstname>Ana</firstname>
+    <lastname>Daniel</lastname>
+    <healthProfile>
+      <measure>
+        <mid>2</mid>
+        <value>160</value>
+        <measureName>height</measureName>
+        <created>2015-12-01T00:00:00+01:00</created>
+      </measure>
+      <measure>
+        <mid>53</mid>
+        <value>59</value>
+        <measureName>weight</measureName>
+        <created>2015-12-01T18:49:36.318+01:00</created>
+      </measure>
+    </healthProfile>
+  </person>
+  <person>
+    <personId>2</personId>
+    <firstname>Mafer</firstname>
+    <lastname>Chuchuni</lastname>
+    <birthdate>1990-06-02T00:00:00+02:00</birthdate>
+    <healthProfile>
+      <measure>
+        <mid>54</mid>
+        <value>154</value>
+        <measureName>height</measureName>
+        <created>2015-12-01T18:50:04.499+01:00</created>
+      </measure>
+    </healthProfile>
+  </person>
+  <person>
+    <personId>3</personId>
+    <firstname>Pacorro</firstname>
+    <lastname>Hernandez</lastname>
+    <healthProfile>
+      <measure>
+        <mid>55</mid>
+        <value>3000</value>
+        <measureName>steps</measureName>
+        <created>2015-12-01T18:50:38.539+01:00</created>
+      </measure>
+    </healthProfile>
+  </person>
+</people>
+
+
+Request #2: GET /persons/1 Accept:application/xml Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <personId>1</personId>
+  <firstname>Ana</firstname>
+  <lastname>Daniel</lastname>
+  <healthProfile>
+    <measure>
+      <mid>2</mid>
+      <value>160</value>
+      <measureName>height</measureName>
+      <created>2015-12-01T00:00:00+01:00</created>
+    </measure>
+    <measure>
+      <mid>53</mid>
+      <value>59</value>
+      <measureName>weight</measureName>
+      <created>2015-12-01T00:00:00+01:00</created>
+    </measure>
+  </healthProfile>
+</person>
+
+
+Request #3: PUT /persons/1 Accept:application/xml Content-type: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <personId>1</personId>
+  <firstname>Ana XML</firstname>
+  <lastname>Daniel</lastname>
+  <healthProfile>
+    <measure>
+      <mid>2</mid>
+      <value>160</value>
+      <measureName>height</measureName>
+      <created>2015-12-01T00:00:00+01:00</created>
+    </measure>
+    <measure>
+      <mid>53</mid>
+      <value>59</value>
+      <measureName>weight</measureName>
+      <created>2015-12-01T00:00:00+01:00</created>
+    </measure>
+  </healthProfile>
+</person>
+
+
+Request #4: POST /persons Accept:application/xml Content-type: application/xml
+=> Result: OK
+=> HTTP Status: 201
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <personId>4</personId>
+  <firstname>Chuck XML</firstname>
+  <lastname>Norris</lastname>
+  <birthdate>1945-01-01T00:00:00+01:00</birthdate>
+  <healthProfile>
+    <measure>
+      <mid>56</mid>
+      <value>190</value>
+      <measureName>height</measureName>
+    </measure>
+    <measure>
+      <mid>57</mid>
+      <value>90</value>
+      <measureName>weight</measureName>
+    </measure>
+  </healthProfile>
+</person>
+
+
+Request #5: DELETE /persons/4 Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 204
+
+Request #1: GET /persons/4 Accept:application/xml Content-type: application/xml
+=> Result: OK
+=> HTTP Status: 404
+
+Request #9: GET /measureTypes Accept:application/xml Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measureTypes>
+  <measureType>height</measureType>
+  <measureType>weight</measureType>
+  <measureType>steps</measureType>
+  <measureType>bloodpressure</measureType>
+</measureTypes>
+
+
+Request #6: GET /persons/1/height Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures>
+  <measure>
+    <mid>2</mid>
+    <value>160</value>
+    <measureName>height</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+</measures>
+
+
+Request #6: GET /persons/3/height Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures/>
+
+
+Request #6: GET /persons/1/weight Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures>
+  <measure>
+    <mid>53</mid>
+    <value>59</value>
+    <measureName>weight</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+  <measure>
+    <mid>52</mid>
+    <value>58</value>
+    <measureName>weight</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+</measures>
+
+
+Request #6: GET /persons/3/weight Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures/>
+
+
+Request #6: GET /persons/1/steps Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures/>
+
+
+Request #6: GET /persons/3/steps Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures>
+  <measure>
+    <mid>55</mid>
+    <value>3000</value>
+    <measureName>steps</measureName>
+    <created>2015-12-01T18:50:38.539+01:00</created>
+  </measure>
+</measures>
+
+
+Request #6: GET /persons/1/bloodpressure Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures/>
+
+
+Request #6: GET /persons/3/bloodpressure Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures/>
+
+
+Request #7: GET /persons/1/height/2 Accept:application/xml Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measure>
+  <mid>2</mid>
+  <value>160</value>
+  <measureName>height</measureName>
+  <created>2015-12-01T00:00:00+01:00</created>
+</measure>
+
+
+Request #6: GET /persons/1/height Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures>
+  <measure>
+    <mid>2</mid>
+    <value>160</value>
+    <measureName>height</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+</measures>
+
+
+Request #8: POST /persons/1/height Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 201
+<?xml version="1.0" encoding="UTF-8"?><measure>
+  <mid>58</mid>
+  <value>123</value>
+  <measureName>height</measureName>
+  <created>2015-12-01T18:53:12.487+01:00</created>
+</measure>
+
+
+Request #6: GET /persons/1/height Accept:application/xml Content-type: 
+=> Result: ERROR
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measures>
+  <measure>
+    <mid>59</mid>
+    <value>123</value>
+    <measureName>height</measureName>
+    <created>2015-12-01T18:53:12.704+01:00</created>
+  </measure>
+  <measure>
+    <mid>58</mid>
+    <value>123</value>
+    <measureName>height</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+  <measure>
+    <mid>2</mid>
+    <value>160</value>
+    <measureName>height</measureName>
+    <created>2015-12-01T00:00:00+01:00</created>
+  </measure>
+</measures>
+
+
+Request #10: PUT /persons/1/height/58 Accept:application/xml Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measure>
+  <mid>58</mid>
+  <value>456</value>
+  <measureName>height</measureName>
+</measure>
+
+
+Request #7: GET /persons/1/height/58 Accept:application/xml Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><measure>
+  <mid>58</mid>
+  <value>456</value>
+  <measureName>height</measureName>
+</measure>
+
+

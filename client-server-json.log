@@ -1,0 +1,107 @@
+Request #1: GET /persons Accept:application/json Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+[{"personId":1,"firstname":"Ana","lastname":"Daniel","birthdate":null,"measure":[{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000},{"mid":53,"value":"59","measureName":{"value":"weight"},"created":1448992176318}]},{"personId":2,"firstname":"Mafer","lastname":"Chuchuni","birthdate":644277600000,"measure":[{"mid":54,"value":"154","measureName":{"value":"height"},"created":1448992204499}]},{"personId":3,"firstname":"Pacorro","lastname":"Hernandez","birthdate":null,"measure":[{"mid":55,"value":"3000","measureName":{"value":"steps"},"created":1448992238539}]}]
+
+Request #2: GET /persons/1 Accept:application/json Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+{"personId":1,"firstname":"Ana","lastname":"Daniel","birthdate":null,"measure":[{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000},{"mid":53,"value":"59","measureName":{"value":"weight"},"created":1448924400000}]}
+
+Request #3: PUT /persons/1 Accept:application/json Content-type: application/json
+=> Result: OK
+=> HTTP Status: 200
+{"personId":1,"firstname":"Ana JSON","lastname":"Daniel","birthdate":null,"measure":[{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000},{"mid":53,"value":"59","measureName":{"value":"weight"},"created":1448924400000}]}
+
+Request #4: POST /persons Accept:application/json Content-type: application/json
+=> Result: OK
+=> HTTP Status: 201
+{"personId":5,"firstname":"Chuck JSON","lastname":"Norris","birthdate":-788918400000,"measure":[]}
+
+Request #5: DELETE /persons/5 Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 204
+
+Request #1: GET /persons/5 Accept:application/json Content-type: application/json
+=> Result: OK
+=> HTTP Status: 404
+
+Request #9: GET /measureTypes Accept:application/json Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+[{"value":"height"},{"value":"weight"},{"value":"steps"},{"value":"bloodpressure"}]
+
+Request #6: GET /persons/1/height Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000}]
+
+Request #6: GET /persons/3/height Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[]
+
+Request #6: GET /persons/1/weight Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[{"mid":53,"value":"59","measureName":{"value":"weight"},"created":1448924400000},{"mid":52,"value":"58","measureName":{"value":"weight"},"created":1448924400000}]
+
+Request #6: GET /persons/3/weight Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[]
+
+Request #6: GET /persons/1/steps Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[]
+
+Request #6: GET /persons/3/steps Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[{"mid":55,"value":"3000","measureName":{"value":"steps"},"created":1448992238539}]
+
+Request #6: GET /persons/1/bloodpressure Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[]
+
+Request #6: GET /persons/3/bloodpressure Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[]
+
+Request #6:   Accept: Content-type: 
+=> Result: OK
+=> HTTP Status: 0
+
+Request #7: GET /persons/1/height/2 Accept:application/json Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000}
+
+Request #6: GET /persons/1/height Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+[{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000}]
+
+Request #8: POST /persons/1/height Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 201
+{"mid":59,"value":"123","measureName":{"value":"height"},"created":1448992392704}
+
+Request #6: GET /persons/1/height Accept:application/json Content-type: 
+=> Result: ERROR
+=> HTTP Status: 200
+[{"mid":59,"value":"123","measureName":{"value":"height"},"created":1448992392704},{"mid":58,"value":"123","measureName":{"value":"height"},"created":1448924400000},{"mid":2,"value":"160","measureName":{"value":"height"},"created":1448924400000}]
+
+Request #10: PUT /persons/1/height/58 Accept:application/json Content-type: 
+=> Result: N/A
+=> HTTP Status: 200
+{"mid":58,"value":"456","measureName":{"value":"height"},"created":null}
+
+Request #7: GET /persons/1/height/58 Accept:application/json Content-type: 
+=> Result: OK
+=> HTTP Status: 200
+{"mid":58,"value":"456","measureName":{"value":"height"},"created":null}
+
